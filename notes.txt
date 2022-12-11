@@ -1,0 +1,16 @@
+
+
+Console.WriteLine(dif);
+
+//Console.WriteLine($"result of 9: {result_of_9} ");
+//Console.WriteLine($"result of 7: {result_of_7} ");
+
+
+ //    "br", "bn", "bb", "bq", "bk", "bb", "bn", "br",
+ //    "bp", "bp", "bp", "bp", "bp", "bp", "bp", "bp",
+ //    "..", "..", "..", "..", "..", "..", "..", "..",
+ //    "..", "..", "..", "..", "..", "..", "..", "..",
+ //    "..", "..", "..", "..", "..", "..", "..", "..",
+ //    "..", "..", "..", "..", "..", "..", "..", "..",
+ //    "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP",
+ //    "wR", "wN", "wB", "wQ", "wK", "wB", "wN", "wR"
