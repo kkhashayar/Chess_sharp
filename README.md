@@ -1,1 +1,1 @@
-# Basic Chess engine implementation with C#. Practice personal project. 
+# Basic Chess engine implementation with C#. 
