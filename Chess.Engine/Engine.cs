@@ -3,6 +3,7 @@ using Chess.PieceBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -533,16 +534,24 @@ namespace Chess.EngineCore
             // For now just move in correct directions
             if (pieceLegalMoves.Contains(dif))
             {
-                // Castling conditions
+                
                 // White King
                 if (piece[0].ToString() == "w")
                 {
-                    if (dif == -2
+                    // Castling conditions --> 
+                    Console.WriteLine($"Kint side castle:{WhiteKingCastle} Queen side castle:{WhiteQueenCastle}");
+                    
+                    // Conditions are growing, need to implement shadow board, "King will be in check next move, king is check"
+                    Console.ReadKey();
+                    if (dif == +2
                         && WhiteKingCastle == true
                         && _board.board[sourceIndex - 1].ToString() == ".."
                         && _board.board[sourceIndex - 2].ToString() == "..")
                     {
-                        // Kingside castle possible "short" 
+
+                        // King side castle possible "short" 
+                        // Moving the king, what a bout the Rook?
+                        return true;
                     }
 
                     else if (dif == -2
@@ -550,13 +559,20 @@ namespace Chess.EngineCore
                         && _board.board[sourceIndex + 1].ToString() == ".."
                         && _board.board[sourceIndex + 2].ToString() == "..")
                     {
-                        // Queenside castle possible "long" 
+                        // Queenside castle possible "long"
+                        return true;
                     }
+                    // Every other move
+                    else
+                    {
 
-                    
+                    }
+                    return false;
                 }
+
                 else if (piece[0].ToString() == "b")
                 {
+                    // Castling conditions -->
                     if (dif == -2
                         && BlackQueenCastle == true
                         && _board.board[sourceIndex - 1].ToString() == ".."

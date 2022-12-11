@@ -5,7 +5,7 @@ using Chess.Parser;
 using System.Text;
 
 Board board = new Board();
-var piecesInUnicode = board.unicodePiece;
+var piecesInUnicode = board.unicodePiece; // For later implementation
 Piece piece = new Piece();
 Engine engine = new Engine(board, piece);
 
