@@ -534,60 +534,81 @@ namespace Chess.EngineCore
             // For now just move in correct directions
             if (pieceLegalMoves.Contains(dif))
             {
-                
                 // White King
                 if (piece[0].ToString() == "w")
                 {
                     // Castling conditions --> 
-                    Console.WriteLine($"Kint side castle:{WhiteKingCastle} Queen side castle:{WhiteQueenCastle}");
+                    Console.WriteLine($"King side castle:{WhiteKingCastle} Queen side castle:{WhiteQueenCastle}");
                     
                     // Conditions are growing, need to implement shadow board, "King will be in check next move, king is check"
                     Console.ReadKey();
-                    if (dif == +2
-                        && WhiteKingCastle == true
+                    if (dif == -2
+                        && WhiteQueenCastle == true
                         && _board.board[sourceIndex - 1].ToString() == ".."
-                        && _board.board[sourceIndex - 2].ToString() == "..")
+                        && _board.board[sourceIndex - 2].ToString() == ".."
+                        && _board.board[sourceIndex - 3].ToString() == ".."
+                        && _board.board[56] == "wR")
                     {
-
+                        _board.board[56] = "..";
+                        _board.board[59] = "wR";
                         // King side castle possible "short" 
                         // Moving the king, what a bout the Rook?
+                        WhiteKingCastle = false;
+                        WhiteQueenCastle = false;
                         return true;
                     }
 
-                    else if (dif == -2
-                        && WhiteQueenCastle == true
+                    else if (dif == +2
+                        && WhiteKingCastle == true
                         && _board.board[sourceIndex + 1].ToString() == ".."
-                        && _board.board[sourceIndex + 2].ToString() == "..")
+                        && _board.board[sourceIndex + 2].ToString() == ".."
+                        && _board.board[63] == "wR")
                     {
+                        _board.board[63] = "..";
+                        _board.board[61] = "wR";
+                        WhiteQueenCastle = false;
+                        WhiteKingCastle = false;
                         // Queenside castle possible "long"
                         return true;
                     }
                     // Every other move
-                    else
-                    {
-
-                    }
                     return false;
                 }
 
                 else if (piece[0].ToString() == "b")
                 {
+                    
                     // Castling conditions -->
+                    // Queen side castle 
                     if (dif == -2
                         && BlackQueenCastle == true
                         && _board.board[sourceIndex - 1].ToString() == ".."
-                        && _board.board[sourceIndex - 2].ToString() == "..")
+                        && _board.board[sourceIndex - 2].ToString() == ".."
+                        && _board.board[sourceIndex - 3].ToString() == ".."
+                        && _board.board[0] == "br")
                     {
-                        // Queenside castle possible "long" 
+                        _board.board[0] = "..";
+                        _board.board[3] = "br";
+                        BlackKingCastle = false;
+                        BlackQueenCastle = false;   
+                        return true;   
                     }
 
-                    else if (dif == -2
+                    // King side castle
+                    else if (dif == +2
                         && BlackKingCastle == true
                         && _board.board[sourceIndex + 1].ToString() == ".."
-                        && _board.board[sourceIndex + 2].ToString() == "..")
+                        && _board.board[sourceIndex + 2].ToString() == ".."
+                        && _board.board[7] == "br")
                     {
+                        _board.board[7] = "..";
+                        _board.board[5] = "br";
+                        BlackKingCastle = false;
+                        BlackQueenCastle = false;
+                        return true;
                         // Kingside castle possible "short" 
                     }
+                    return false;
                 }
                 return true;
             }
@@ -753,6 +774,9 @@ namespace Chess.EngineCore
                     case "wK" or "bk":
                         if (GetKing(sourceIndex, targetIndex, dif, sSquare, pieceLegalMoves))
                         {
+                            Console.WriteLine($"Black --> KSide{BlackKingCastle}  QSide{BlackQueenCastle}");
+                            Console.WriteLine($"White --> KSide{WhiteKingCastle}  QSide{WhiteQueenCastle}");
+                            Console.ReadKey();
                             UpdateBoard(sourceIndex, targetIndex);
                             return true;
                         }

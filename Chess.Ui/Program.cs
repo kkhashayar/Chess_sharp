@@ -11,6 +11,6 @@ Engine engine = new Engine(board, piece);
 
 FenParser fenParser = new FenParser(board, engine);
 
-fenParser.SetupBoard("r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1"); // without parameter will use default fen --> Normal startup
+fenParser.SetupBoard("r1q1k2r/8/8/8/8/8/8/R1Q1K2R w KQkq - 0 1"); // without parameter will use default fen --> Normal startup
 engine.Run();
 
