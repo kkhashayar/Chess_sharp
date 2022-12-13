@@ -33,11 +33,15 @@ namespace Chess.EngineCore
         public string SSquare { get; set; } = string.Empty;
         public string TSquare { get; set; } = string.Empty;
 
+
         // Castle rules
         public bool WhiteKingCastle { get; set; } = false;
         public bool WhiteQueenCastle { get; set; } = false;
         public bool BlackKingCastle { get; set; } = false;
         public bool BlackQueenCastle { get; set; } = false;
+
+        // Rook conditions to remove castle rights 
+        
 
 
         // read the board, and creates a piece object for each piece,
@@ -298,6 +302,9 @@ namespace Chess.EngineCore
 
         public bool GetRook(int sourceIndex, int targetIndex, int dif, string sSquare, string tSquare)
         {
+            // Checks for Rook color and position to change the correspondence castle right
+            
+            
             _pathelements.Clear();
             // Move in files
             if (sSquare.Substring(0, 1) == tSquare.Substring(0, 1))
@@ -747,6 +754,28 @@ namespace Chess.EngineCore
                     case "wR" or "br":
                         if (GetRook(sourceIndex, targetIndex, dif, sSquare, tSquare))
                         {
+                            if(BlackKingCastle == true || BlackQueenCastle == true)
+                            {
+                                if (sourceIndex == 0)
+                                {
+                                    BlackQueenCastle = false;
+                                }
+                                if (sourceIndex == 7)
+                                {
+                                    BlackKingCastle = false;
+                                }
+                            }
+                            if(WhiteKingCastle == true || WhiteQueenCastle == true)
+                            {
+                                if (sourceIndex == 63)
+                                {
+                                    WhiteKingCastle = false;
+                                }
+                                if (sourceIndex == 56)
+                                {
+                                    WhiteQueenCastle = false;
+                                }
+                            }
                             UpdateBoard(sourceIndex, targetIndex);
                             return true;
                         }
