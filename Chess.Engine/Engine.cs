@@ -110,7 +110,9 @@ namespace Chess.EngineCore
         {
             for (int i = 0; i < _board.board.Count(); i++)
             {
+                
                 string positioinCoords = _board.GetCoordinates(i);
+                var row = positioinCoords[1].ToString();
                 if (_board.board[i] != "..")
                 {
                     if (_board.board[i] == "wN")
@@ -238,6 +240,15 @@ namespace Chess.EngineCore
                             PositionCoords = positioinCoords,
                             Direction = -1
                         };
+                        if (row == "2")
+                        {
+                            _piece.IsMoved = false;
+                        }
+                        else
+                        {
+                            _piece.IsMoved = true;
+                        }
+
                         Position.Add(_piece);
                     }
                     else if (_board.board[i] == "bp")
@@ -253,6 +264,14 @@ namespace Chess.EngineCore
                             PositionCoords = positioinCoords,
                             Direction = +1
                         };
+                        if(row == "7")
+                        {
+                            _piece.IsMoved = false;
+                        }
+                        else
+                        {
+                            _piece.IsMoved = true;  
+                        }
                         Position.Add(_piece);
                     }
                     else if (_board.board[i] == "wK")
