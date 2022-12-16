@@ -29,6 +29,7 @@ namespace Chess.EngineCore
         public int Ply { get; set; }
         public string? Turn { get; set; }
         public List<string> History { get; set; }
+    
         public List<string> Move { get; set; } // Useful in move history
         public string SSquare { get; set; } = string.Empty;
         public string TSquare { get; set; } = string.Empty;
@@ -274,6 +275,7 @@ namespace Chess.EngineCore
                         }
                         Position.Add(_piece);
                     }
+
                     else if (_board.board[i] == "wK")
                     {
                         var _piece = new Piece()
@@ -322,8 +324,6 @@ namespace Chess.EngineCore
         public bool GetRook(int sourceIndex, int targetIndex, int dif, string sSquare, string tSquare)
         {
             // Checks for Rook color and position to change the correspondence castle right
-            
-            
             _pathelements.Clear();
             // Move in files
             if (sSquare.Substring(0, 1) == tSquare.Substring(0, 1))
@@ -644,6 +644,8 @@ namespace Chess.EngineCore
         }
         public bool GetWhitePawn(int sourceIndex, int targetIndex, int dif, int[] pieceLegalMoves)
         {
+            // -9 == right en passant and -7 == left en passant 
+            
             if (pieceLegalMoves.Contains(dif))
             {
                 if (dif == -7 || dif == -9)
@@ -709,6 +711,20 @@ namespace Chess.EngineCore
         public void ShowBoard()
         {
             Console.Clear();
+            Console.WriteLine("****************************************");
+            try
+            {
+                if (History.Count > 0 || History != null)
+                {
+                    foreach (var moveNotation in History)
+                    {
+                        Console.WriteLine($"{moveNotation}");
+                    }
+                }
+            }
+            catch (NullReferenceException)
+            { }
+            Console.WriteLine();
             Console.WriteLine();
             for (int rank = 0; rank < 8; rank++)
             {
@@ -722,6 +738,9 @@ namespace Chess.EngineCore
             }
             Console.WriteLine("\n A   B   C   D   E   F   G   H");
             Console.WriteLine();
+            
+            
+            
         }
 
         /// <summary>
@@ -843,8 +862,19 @@ namespace Chess.EngineCore
             return false; // Will be useful
         }
 
+        public string GetMoveNotation(int sourceIndex, int targetIndex) 
+        {
+            string startSquare = _board.GetCoordinates(sourceIndex);
+            string endSquare = _board.GetCoordinates(targetIndex);
+
+            var move = ($"{startSquare}-{endSquare}");
+            
+            return move;
+        }
         public void UpdateBoard(int sourceIndex, int targetIndex)
         {
+             var moveNotation = GetMoveNotation(sourceIndex, targetIndex);
+             History.Add((moveNotation));
             _board.board[targetIndex] = _board.board[sourceIndex];
             _board.board[sourceIndex] = "..";
         }

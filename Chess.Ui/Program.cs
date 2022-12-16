@@ -10,7 +10,7 @@ Piece piece = new Piece();
 Engine engine = new Engine(board, piece);
 
 FenParser fenParser = new FenParser(board, engine);
-
-fenParser.SetupBoard("r1q1k2r/8/8/8/8/8/8/R1Q1K2R w KQkq - 0 1"); // without parameter will use default fen --> Normal startup
+engine.History = new List<string>();
+fenParser.SetupBoard(""); // without parameter will use default fen --> Normal startup
 engine.Run();
 
