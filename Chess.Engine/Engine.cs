@@ -33,8 +33,10 @@ namespace Chess.EngineCore
         public List<string> Move { get; set; } // Useful in move history
         public string SSquare { get; set; } = string.Empty;
         public string TSquare { get; set; } = string.Empty;
+        
         // En Passant Flag
         public bool LastMoveWasPawn { get; set; } = true;
+        public bool PawnFirstMove { get; set; } = false;
 
         // Castle rules
         public bool WhiteKingCastle { get; set; } = false;
@@ -638,22 +640,57 @@ namespace Chess.EngineCore
 
             // Black KLing
         }
+
+        /*
+         * Pawn unlike what we think has a rather complex logic
+         * A) 2 Squares only as a first move. 
+         * B) 1 Square even as a first move.
+         * C) Captures diagonaly next diagonal square 
+         * D) Captures EN passant pawn, Capturing empty square and pawn besied!
+         */
         public bool GetWhitePawn(int sourceIndex, int targetIndex, int dif, int[] pieceLegalMoves)
         {
             // -9 == right en passant and -7 == left en passant 
             
             if (pieceLegalMoves.Contains(dif))
             {
+                
                 if (dif == -7 || dif == -9)
                 {
-                    if (_board.board[targetIndex] != "..")
+                    // En passant condition 
+                    if (_board.board[targetIndex].ToString() == ".." && LastMoveWasPawn == true && PawnFirstMove == true)
+                    {
+                        if (_board.board[sourceIndex + 1] != null && _board.board[sourceIndex + 1][1].ToString() == "p")
+                        {
+                            _board.board[sourceIndex + 1] = "..";
+                            return true;
+                        }
+                        else if (_board.board[sourceIndex - 1] != null && _board.board[sourceIndex - 1][1].ToString() == "p")
+                        {
+                            _board.board[sourceIndex - 1] = "..";
+                            return true;
+                        }
+                        return false;
+                    }
+                    // Capture condition
+                    if (_board.board[targetIndex].ToString() != "..")
                     {
                         return true;
                     }
                     return false;
                 }
-                // Will add more filters here, 1)If it is a first move, 2)en passant with shadow pawn 
-                return true;
+                // Will add more filters here, 1)If it is a first move, 2)en passant with shadow pawn
+                // Forward condition 
+                var row = _board.GetCoordinates(sourceIndex)[1].ToString();
+                if(dif == -16 && row == "2")
+                {
+                    return true;
+                }
+                else if(dif == -8 && _board.board[targetIndex].ToString() == "..")
+                {
+                    return true;
+                }
+                return false;
             }
             return false;
         }
@@ -664,14 +701,41 @@ namespace Chess.EngineCore
             {
                 if (dif == +7 || dif == +9)
                 {
-                    if (_board.board[targetIndex] != "..")
+                    // En passant condition 
+                    if (_board.board[targetIndex].ToString() == ".." && LastMoveWasPawn == true && PawnFirstMove == true)
+                    {
+                        if (_board.board[sourceIndex + 1] != null && _board.board[sourceIndex + 1][1].ToString() == "P")
+                        {
+                            _board.board[sourceIndex + 1] = "..";
+                            return true;
+                        }
+                        else if (_board.board[sourceIndex - 1] != null && _board.board[sourceIndex - 1][1].ToString() == "P")
+                        {
+                            _board.board[sourceIndex - 1] = "..";
+                            return true;
+                        }
+                        return false;
+
+                    }
+                    // Capture condition
+                    if (_board.board[targetIndex].ToString() != "..")
                     {
                         return true;
                     }
                     return false;
                 }
                 // Will add more filters here, 1)If it is a first move, 2)en passant with shadow pawn
-                return true;
+                // Forward condition 
+                var row = _board.GetCoordinates(sourceIndex)[1].ToString();
+                if (dif == +16 && row == "7")
+                {
+                    return true;
+                }
+                else if (dif == +8 && _board.board[targetIndex].ToString() == "..")
+                {
+                    return true;
+                }
+                return false;
             }
             return false;
         }
@@ -820,6 +884,14 @@ namespace Chess.EngineCore
                     case "wP":
                         if (GetWhitePawn(sourceIndex, targetIndex, dif, pieceLegalMoves))
                         {
+                            if(dif == -16)
+                            {
+                                PawnFirstMove = true;
+                            }
+                            else
+                            {
+                                PawnFirstMove = false;
+                            }
                             UpdateBoard(sourceIndex, targetIndex);
                             return true;
                         }
@@ -829,6 +901,14 @@ namespace Chess.EngineCore
                     case "bp":
                         if (GetBlackPawn(sourceIndex, targetIndex, dif, pieceLegalMoves))
                         {
+                            if (dif == 16)
+                            {
+                                PawnFirstMove = true;
+                            }
+                            else
+                            {
+                                PawnFirstMove = false;
+                            }
                             UpdateBoard(sourceIndex, targetIndex);
                             return true;
                         }
