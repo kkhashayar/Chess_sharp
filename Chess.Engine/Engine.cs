@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
@@ -28,11 +29,12 @@ namespace Chess.EngineCore
         public int Ply { get; set; }
         public string? Turn { get; set; }
         public List<string> History { get; set; }
-    
+        
         public List<string> Move { get; set; } // Useful in move history
         public string SSquare { get; set; } = string.Empty;
         public string TSquare { get; set; } = string.Empty;
-
+        // En Passant Flag
+        public bool LastMoveWasPawn { get; set; } = true;
 
         // Castle rules
         public bool WhiteKingCastle { get; set; } = false;
@@ -40,11 +42,6 @@ namespace Chess.EngineCore
         public bool BlackKingCastle { get; set; } = false;
         public bool BlackQueenCastle { get; set; } = false;
 
-        // Rook conditions to remove castle rights 
-        
-
-
-        // read the board, and creates a piece object for each piece,
         // the rest of the data will be awailable on class level 
         public List<Piece> Position = new List<Piece>();
 
@@ -718,6 +715,7 @@ namespace Chess.EngineCore
                     foreach (var moveNotation in History)
                     {
                         Console.WriteLine($"{moveNotation}");
+                        Console.WriteLine(LastMoveWasPawn);
                     }
                 }
             }
@@ -872,6 +870,14 @@ namespace Chess.EngineCore
         }
         public void UpdateBoard(int sourceIndex, int targetIndex)
         {
+            if (_board.board[sourceIndex][1].ToString() == "p"|| _board.board[sourceIndex][1].ToString() == "P")
+            {
+                LastMoveWasPawn = true;
+            }
+            else
+            {
+                LastMoveWasPawn = false;
+            }
              var moveNotation = GetMoveNotation(sourceIndex, targetIndex);
              History.Add((moveNotation));
             _board.board[targetIndex] = _board.board[sourceIndex];
