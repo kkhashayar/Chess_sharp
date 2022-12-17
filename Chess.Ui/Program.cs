@@ -1,6 +1,5 @@
 ﻿
 using Chess.EngineCore;
-using Chess.PieceBase;
 using System.Text;
 using static Chess.EngineCore.Boards;
 using static Chess.EngineCore.FenParser;
@@ -14,9 +13,10 @@ Piece piece = new Piece();
 
 Engine engine = new Engine(board, piece);
 
-var fenParser = new Chess.EngineCore.FenParser(board, engine);
-
+var fenParser = new Chess.EngineCore.FenParser(board, engine, "");
+fenParser.SetupBoard("");
 engine.History = new List<string>();
+
 
 // without parameter will use default fen --> Normal startup
 
