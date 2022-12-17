@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Chess.Boards\Chess.Board.csproj" />
     <ProjectReference Include="..\Chess.Engine\Chess.EngineCore.csproj" />
     <ProjectReference Include="..\Chess.Pieces\Chess.PieceBase.csproj" />
   </ItemGroup>

@@ -1,16 +1,24 @@
-﻿using Chess.Boards;
+﻿
 using Chess.EngineCore;
 using Chess.PieceBase;
-using Chess.Parser;
 using System.Text;
+using static Chess.EngineCore.Boards;
+using static Chess.EngineCore.FenParser;
 
-Board board = new Board();
-var piecesInUnicode = board.unicodePiece; // For later implementation
+
+var board = new Chess.EngineCore.Boards.Board();
+
+// var piecesInUnicode = board.unicodePiece; // For later implementation
+
 Piece piece = new Piece();
+
 Engine engine = new Engine(board, piece);
 
-FenParser fenParser = new FenParser(board, engine);
+var fenParser = new Chess.EngineCore.FenParser(board, engine);
+
 engine.History = new List<string>();
-fenParser.SetupBoard(""); // without parameter will use default fen --> Normal startup
+
+// without parameter will use default fen --> Normal startup
+
 engine.Run();
 

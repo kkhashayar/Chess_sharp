@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Chess.Engine\Chess.EngineCore.csproj" />
-    <ProjectReference Include="..\Chess.Parser\Chess.Parser.csproj" />
   </ItemGroup>
 
 </Project>

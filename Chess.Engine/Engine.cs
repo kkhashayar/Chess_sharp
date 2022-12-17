@@ -1,4 +1,4 @@
-﻿using Chess.Boards;
+﻿
 using Chess.PieceBase;
 using System;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using static Chess.EngineCore.Boards;
 
 namespace Chess.EngineCore
 {
