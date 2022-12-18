@@ -657,6 +657,10 @@ namespace Chess.EngineCore
                 
                 if (dif == -7 || dif == -9)
                 {
+                    var lastMoveMade = History.Last();
+                    var targetSourceIndex = lastMoveMade[0];
+                    
+                    Console.ReadKey();
                     // En passant condition 
                     if (_board.board[targetIndex].ToString() == ".." && LastMoveWasPawn == true && PawnFirstMove == true)
                     {
@@ -701,6 +705,8 @@ namespace Chess.EngineCore
             {
                 if (dif == +7 || dif == +9)
                 {
+                    // getting the last annotation 
+                    var lastMoveMade = History.Last();
                     // En passant condition 
                     if (_board.board[targetIndex].ToString() == ".." && LastMoveWasPawn == true && PawnFirstMove == true)
                     {
@@ -943,9 +949,7 @@ namespace Chess.EngineCore
         {
             string startSquare = _board.GetCoordinates(sourceIndex);
             string endSquare = _board.GetCoordinates(targetIndex);
-
-            var move = ($"{startSquare}-{endSquare}");
-            
+            var move = ($"{sourceIndex}{startSquare}-{endSquare}");
             return move;
         }
         public void UpdateBoard(int sourceIndex, int targetIndex)
@@ -958,8 +962,13 @@ namespace Chess.EngineCore
             {
                 LastMoveWasPawn = false;
             }
-             var moveNotation = GetMoveNotation(sourceIndex, targetIndex);
-             History.Add((moveNotation));
+
+            var moveNotation = GetMoveNotation(sourceIndex, targetIndex);
+            var moveToAdd = moveNotation.Substring(2);
+            // This will be addon flag
+            var coordinate = moveNotation.Substring(0, 2);
+
+            History.Add((moveNotation));
             _board.board[targetIndex] = _board.board[sourceIndex];
             _board.board[sourceIndex] = "..";
         }
@@ -996,7 +1005,6 @@ namespace Chess.EngineCore
                     ShowBoard();
                 }
             }
-
         }
 
         public void MachineTurn()
