@@ -37,7 +37,7 @@ namespace Chess.EngineCore
         // En Passant Flag
         public bool LastMoveWasPawn { get; set; } = true;
         public bool PawnFirstMove { get; set; } = false;
-
+        public int TargetSourceIndex { get; set; }
         // Castle rules
         public bool WhiteKingCastle { get; set; } = false;
         public bool WhiteQueenCastle { get; set; } = false;
@@ -77,8 +77,6 @@ namespace Chess.EngineCore
         {
             return allPieces.IndexOf(piece);
         }
-
-
         public void SetSideColor()
         {
             if (!Playing)
@@ -98,13 +96,12 @@ namespace Chess.EngineCore
                 }
                 Playing = true;
             }
-            // Will set a side color from Fen reader
+        // Will set a side color from Fen reader
         }
 
         // 1) Converts Fen to Board
         // 2) Reads the board and creates Instance of each pieces
         // 3) Rest of the Fen info will be saved in class level properties
-       
         public void AsignThepieces()
         {
             for (int i = 0; i < _board.board.Count(); i++)
@@ -651,31 +648,29 @@ namespace Chess.EngineCore
         public bool GetWhitePawn(int sourceIndex, int targetIndex, int dif, int[] pieceLegalMoves)
         {
             // -9 == right en passant and -7 == left en passant 
-            
             if (pieceLegalMoves.Contains(dif))
             {
-                
                 if (dif == -7 || dif == -9)
-                {
-                    var lastMoveMade = History.Last();
-                    var targetSourceIndex = lastMoveMade[0];
-                    
-                    Console.ReadKey();
-                    // En passant condition 
-                    if (_board.board[targetIndex].ToString() == ".." && LastMoveWasPawn == true && PawnFirstMove == true)
+                { 
+                    var leftgap = TargetSourceIndex += 15;
+                    var rightgap = TargetSourceIndex += 17;
+                    if( leftgap == sourceIndex || rightgap == sourceIndex)
                     {
-                        if (_board.board[sourceIndex + 1] != null && _board.board[sourceIndex + 1][1].ToString() == "p")
+                        if (_board.board[targetIndex].ToString() == ".." && LastMoveWasPawn == true && PawnFirstMove == true)
                         {
-                            _board.board[sourceIndex + 1] = "..";
-                            return true;
+                            if (_board.board[sourceIndex + 1] != null && _board.board[sourceIndex + 1][1].ToString() == "p")
+                            {
+                                _board.board[sourceIndex + 1] = "..";
+                                return true;
+                            }
+                            else if (_board.board[sourceIndex - 1] != null && _board.board[sourceIndex - 1][1].ToString() == "p")
+                            {
+                                _board.board[sourceIndex - 1] = "..";
+                                return true;
+                            }
+                            return false;
                         }
-                        else if (_board.board[sourceIndex - 1] != null && _board.board[sourceIndex - 1][1].ToString() == "p")
-                        {
-                            _board.board[sourceIndex - 1] = "..";
-                            return true;
-                        }
-                        return false;
-                    }
+                    }   
                     // Capture condition
                     if (_board.board[targetIndex].ToString() != "..")
                     {
@@ -683,7 +678,6 @@ namespace Chess.EngineCore
                     }
                     return false;
                 }
-                // Will add more filters here, 1)If it is a first move, 2)en passant with shadow pawn
                 // Forward condition 
                 var row = _board.GetCoordinates(sourceIndex)[1].ToString();
                 if(dif == -16 && row == "2")
@@ -705,23 +699,25 @@ namespace Chess.EngineCore
             {
                 if (dif == +7 || dif == +9)
                 {
-                    // getting the last annotation 
-                    var lastMoveMade = History.Last();
-                    // En passant condition 
-                    if (_board.board[targetIndex].ToString() == ".." && LastMoveWasPawn == true && PawnFirstMove == true)
+                    // +9 == right en passant and +7 == left en passant 
+                    var leftgap = TargetSourceIndex += 15;
+                    var rightgap = TargetSourceIndex -= 17;
+                    if (leftgap == TargetSourceIndex || rightgap == TargetSourceIndex)
                     {
-                        if (_board.board[sourceIndex + 1] != null && _board.board[sourceIndex + 1][1].ToString() == "P")
+                        if (_board.board[targetIndex].ToString() == ".." && LastMoveWasPawn == true && PawnFirstMove == true)
                         {
-                            _board.board[sourceIndex + 1] = "..";
-                            return true;
+                            if (_board.board[sourceIndex + 1] != null && _board.board[sourceIndex + 1][1].ToString() == "P")
+                            {
+                                _board.board[sourceIndex + 1] = "..";
+                                return true;
+                            }
+                            else if (_board.board[sourceIndex - 1] != null && _board.board[sourceIndex - 1][1].ToString() == "P")
+                            {
+                                _board.board[sourceIndex - 1] = "..";
+                                return true;
+                            }
+                            return false;
                         }
-                        else if (_board.board[sourceIndex - 1] != null && _board.board[sourceIndex - 1][1].ToString() == "P")
-                        {
-                            _board.board[sourceIndex - 1] = "..";
-                            return true;
-                        }
-                        return false;
-
                     }
                     // Capture condition
                     if (_board.board[targetIndex].ToString() != "..")
@@ -730,7 +726,6 @@ namespace Chess.EngineCore
                     }
                     return false;
                 }
-                // Will add more filters here, 1)If it is a first move, 2)en passant with shadow pawn
                 // Forward condition 
                 var row = _board.GetCoordinates(sourceIndex)[1].ToString();
                 if (dif == +16 && row == "7")
@@ -745,8 +740,6 @@ namespace Chess.EngineCore
             }
             return false;
         }
-
-
         // ply starts with fen, and will set based on history of moves.
         public string GetTurn()
         {
@@ -947,6 +940,7 @@ namespace Chess.EngineCore
 
         public string GetMoveNotation(int sourceIndex, int targetIndex) 
         {
+            TargetSourceIndex= sourceIndex;
             string startSquare = _board.GetCoordinates(sourceIndex);
             string endSquare = _board.GetCoordinates(targetIndex);
             var move = ($"{sourceIndex}{startSquare}-{endSquare}");
