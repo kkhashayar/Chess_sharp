@@ -1022,10 +1022,11 @@ namespace Chess.EngineCore
 
 /*
  * TODO:
- * Implement Fen parser --> Partially done: Piece positions, turn, castle rights.
- * Implement Castle rights for King and Rooks
+ * Implement Fen parser --> Partially done: Piece positions, turn, castle rights. Done--> Position, Castle rights, turn
  * 
- * Implement En passant, first 2square move for pawns
+ * Implement Castle rights for King and Rooks. Done 
+ * 
+ * Implement En passant, first 2square move for pawns. Done 
  * 
  * Implement Check
  * 
