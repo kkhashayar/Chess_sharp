@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace Chess.EngineCore
 {
-    public class Square
+    public struct Square
     {
-        public int SquareNumber { get; set; }
-        public string? SquareName { get; set; }
-        public int Value { get; set; } = 0;
+        public Square(){}
+        public int SquareNumber = 0; 
+        public string? SquareName = string.Empty;
+        public int Value = 0;
     }
 }
