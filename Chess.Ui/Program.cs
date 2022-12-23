@@ -35,6 +35,6 @@ void PrintBoard()
 //PrintBoard();
 
 var fenParser = new Chess.EngineCore.FenParser(board, engine, "");
-fenParser.SetupBoard("8/4p3/8/8/8/8/4P3/8 w - - 0 1");
+fenParser.SetupBoard("");
 engine.History = new List<string>();
 engine.Run();

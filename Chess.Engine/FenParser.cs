@@ -60,7 +60,7 @@ namespace Chess.EngineCore
                         int emptySquare = int.Parse(square.ToString());
                         for (int i = 0; i < emptySquare; i++)
                         {
-                            _board.board[index] = "..";
+                            _board.board[index] = ".";
                             index++;
                         }
                     }

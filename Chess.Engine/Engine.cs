@@ -797,7 +797,7 @@ namespace Chess.EngineCore
                 }
                 Console.WriteLine(ranks[rank]);
             }
-            Console.WriteLine("\n A   B   C   D   E   F   G   H");
+            Console.WriteLine("\nA  B  C  D  E  F  G  H");
             Console.WriteLine();
             
             
