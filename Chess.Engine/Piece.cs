@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace Chess.EngineCore
 {
-    public class Piece
+    public struct Piece
     {
-        public string? Name { get; set; }
-        public string? Sign { get; set; }
-        public string? Color { get; set; }
-        public decimal Value { get; set; }
-        public bool IsMoved { get; set; } = false; //Only for en passant.
-        public int Direction { get; set; }
-        public int PositionIndex { get; set; }
-        public string? PositionCoords { get; set; }
+        public Piece(){}
+        public string Name = string.Empty;
+        public string Sign = string.Empty;
+        public string Color = string.Empty;
+        public decimal Value = 0;   
+        public bool IsMoved = false; //Only for en passant.
+        public int Direction = 0;
+        public int PositionIndex = 0;   
+        public string PositionCoords = string.Empty;
     }
 }

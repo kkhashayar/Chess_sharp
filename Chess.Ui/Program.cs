@@ -32,6 +32,8 @@ void PrintBoard()
     }
 }
 
+//PrintBoard();
+
 var fenParser = new Chess.EngineCore.FenParser(board, engine, "");
 fenParser.SetupBoard("");
 engine.History = new List<string>();
