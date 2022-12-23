@@ -28,7 +28,7 @@ namespace Chess.EngineCore
         public bool Playing { get; set; } = false;
         public int Ply { get; set; }
         public string? Turn { get; set; }
-        public List<string> History { get; set; }
+        public List<string>? History { get; set; }
         
         public List<string> Move { get; set; } // Useful in move history
         public string SSquare { get; set; } = string.Empty;
@@ -54,7 +54,7 @@ namespace Chess.EngineCore
         public int[] ranks = new int[8] { 8, 7, 6, 5, 4, 3, 2, 1 };
 
         // All pieces as a string
-        public List<string> allPieces = new List<string> { "wP", "wN", "wB", "wR", "wQ", "wK", "bp", "bn", "bb", "br", "bq", "bk" };
+        public List<string> allPieces = new List<string> { "P", "N", "B", "R", "Q", "K", "p", "n", "b", "r", "q", "k" };
 
         // Jagged array, holding directions of pieces, match based on indexes.
         public int[][] LegalMoves = new int[][]
@@ -106,12 +106,11 @@ namespace Chess.EngineCore
         {
             for (int i = 0; i < _board.board.Count(); i++)
             {
-                
                 string positioinCoords = _board.GetCoordinates(i);
                 var row = positioinCoords[1].ToString();
                 if (_board.board[i] != "..")
                 {
-                    if (_board.board[i] == "wN")
+                    if (_board.board[i] == "N")
                     {
                         var _piece = new Piece()
                         {
@@ -125,7 +124,7 @@ namespace Chess.EngineCore
                         };
                         Position.Add(_piece);
                     }
-                    else if (_board.board[i] == "bn")
+                    else if (_board.board[i] == "n")
                     {
                         var _piece = new Piece()
                         {
@@ -139,7 +138,7 @@ namespace Chess.EngineCore
                         };
                         Position.Add(_piece);
                     }
-                    else if (_board.board[i] == "wR")
+                    else if (_board.board[i] == "R")
                     {
                         var _piece = new Piece()
                         {
@@ -153,7 +152,7 @@ namespace Chess.EngineCore
                         };
                         Position.Add(_piece);
                     }
-                    else if (_board.board[i] == "br")
+                    else if (_board.board[i] == "r")
                     {
                         var _piece = new Piece()
                         {
@@ -167,7 +166,7 @@ namespace Chess.EngineCore
                         };
                         Position.Add(_piece);
                     }
-                    else if (_board.board[i] == "wB")
+                    else if (_board.board[i] == "B")
                     {
                         var _piece = new Piece()
                         {
@@ -181,7 +180,7 @@ namespace Chess.EngineCore
                         };
                         Position.Add(_piece);
                     }
-                    else if (_board.board[i] == "bb")
+                    else if (_board.board[i] == "b")
                     {
                         var _piece = new Piece()
                         {
@@ -195,7 +194,7 @@ namespace Chess.EngineCore
                         };
                         Position.Add(_piece);
                     }
-                    else if (_board.board[i] == "wQ")
+                    else if (_board.board[i] == "Q")
                     {
                         var _piece = new Piece()
                         {
@@ -209,7 +208,7 @@ namespace Chess.EngineCore
                         };
                         Position.Add(_piece);
                     }
-                    else if (_board.board[i] == "bq")
+                    else if (_board.board[i] == "q")
                     {
                         var _piece = new Piece()
                         {
@@ -223,7 +222,7 @@ namespace Chess.EngineCore
                         };
                         Position.Add(_piece);
                     }
-                    else if (_board.board[i] == "wP")
+                    else if (_board.board[i] == "P")
                     {
                         var _piece = new Piece()
                         {
@@ -247,7 +246,7 @@ namespace Chess.EngineCore
 
                         Position.Add(_piece);
                     }
-                    else if (_board.board[i] == "bp")
+                    else if (_board.board[i] == "p")
                     {
                         var _piece = new Piece()
                         {
@@ -271,7 +270,7 @@ namespace Chess.EngineCore
                         Position.Add(_piece);
                     }
 
-                    else if (_board.board[i] == "wK")
+                    else if (_board.board[i] == "K")
                     {
                         var _piece = new Piece()
                         {
@@ -285,7 +284,7 @@ namespace Chess.EngineCore
                         };
                         Position.Add(_piece);
                     }
-                    else if (_board.board[i] == "bk")
+                    else if (_board.board[i] == "k")
                     {
                         var _piece = new Piece()
                         {
@@ -556,7 +555,7 @@ namespace Chess.EngineCore
             if (pieceLegalMoves.Contains(dif))
             {
                 // White King
-                if (piece[0].ToString() == "w")
+                if (piece == "K")
                 {
                     // Castling conditions --> 
                     Console.WriteLine($"King side castle:{WhiteKingCastle} Queen side castle:{WhiteQueenCastle}");
@@ -568,10 +567,10 @@ namespace Chess.EngineCore
                         && _board.board[sourceIndex - 1].ToString() == ".."
                         && _board.board[sourceIndex - 2].ToString() == ".."
                         && _board.board[sourceIndex - 3].ToString() == ".."
-                        && _board.board[56] == "wR")
+                        && _board.board[56] == "R")
                     {
                         _board.board[56] = "..";
-                        _board.board[59] = "wR";
+                        _board.board[59] = "R";
                         // King side castle possible "short" 
                         // Moving the king, what a bout the Rook?
                         WhiteKingCastle = false;
@@ -583,10 +582,10 @@ namespace Chess.EngineCore
                         && WhiteKingCastle == true
                         && _board.board[sourceIndex + 1].ToString() == ".."
                         && _board.board[sourceIndex + 2].ToString() == ".."
-                        && _board.board[63] == "wR")
+                        && _board.board[63] == "R")
                     {
                         _board.board[63] = "..";
-                        _board.board[61] = "wR";
+                        _board.board[61] = "R";
                         WhiteQueenCastle = false;
                         WhiteKingCastle = false;
                         // Queenside castle possible "long"
@@ -596,7 +595,7 @@ namespace Chess.EngineCore
                     return false;
                 }
 
-                else if (piece[0].ToString() == "b")
+                else if (piece == "k")
                 {
                     
                     // Castling conditions -->
@@ -606,10 +605,10 @@ namespace Chess.EngineCore
                         && _board.board[sourceIndex - 1].ToString() == ".."
                         && _board.board[sourceIndex - 2].ToString() == ".."
                         && _board.board[sourceIndex - 3].ToString() == ".."
-                        && _board.board[0] == "br")
+                        && _board.board[0] == "r")
                     {
                         _board.board[0] = "..";
-                        _board.board[3] = "br";
+                        _board.board[3] = "r";
                         BlackKingCastle = false;
                         BlackQueenCastle = false;   
                         return true;   
@@ -620,10 +619,10 @@ namespace Chess.EngineCore
                         && BlackKingCastle == true
                         && _board.board[sourceIndex + 1].ToString() == ".."
                         && _board.board[sourceIndex + 2].ToString() == ".."
-                        && _board.board[7] == "br")
+                        && _board.board[7] == "r")
                     {
                         _board.board[7] = "..";
-                        _board.board[5] = "br";
+                        _board.board[5] = "r";
                         BlackKingCastle = false;
                         BlackQueenCastle = false;
                         return true;
@@ -658,12 +657,12 @@ namespace Chess.EngineCore
                     {
                         if (_board.board[targetIndex].ToString() == ".." && LastMoveWasPawn == true && PawnFirstMove == true)
                         {
-                            if (_board.board[sourceIndex + 1] != null && _board.board[sourceIndex + 1][1].ToString() == "p")
+                            if (_board.board[sourceIndex + 1] != null && _board.board[sourceIndex + 1].ToString() == "p")
                             {
                                 _board.board[sourceIndex + 1] = "..";
                                 return true;
                             }
-                            else if (_board.board[sourceIndex - 1] != null && _board.board[sourceIndex - 1][1].ToString() == "p")
+                            else if (_board.board[sourceIndex - 1] != null && _board.board[sourceIndex - 1].ToString() == "p")
                             {
                                 _board.board[sourceIndex - 1] = "..";
                                 return true;
@@ -706,12 +705,12 @@ namespace Chess.EngineCore
                     {
                         if (_board.board[targetIndex].ToString() == ".." && LastMoveWasPawn == true && PawnFirstMove == true)
                         {
-                            if (_board.board[sourceIndex + 1] != null && _board.board[sourceIndex + 1][1].ToString() == "P")
+                            if (_board.board[sourceIndex + 1] != null && _board.board[sourceIndex + 1].ToString() == "P")
                             {
                                 _board.board[sourceIndex + 1] = "..";
                                 return true;
                             }
-                            else if (_board.board[sourceIndex - 1] != null && _board.board[sourceIndex - 1][1].ToString() == "P")
+                            else if (_board.board[sourceIndex - 1] != null && _board.board[sourceIndex - 1].ToString() == "P")
                             {
                                 _board.board[sourceIndex - 1] = "..";
                                 return true;
@@ -832,7 +831,7 @@ namespace Chess.EngineCore
                 //2) piece rules
                 switch (piece)
                 {
-                    case "wN" or "bn":
+                    case "N" or "n":
                         if (GetKnight(sourceIndex, targetIndex, dif, pieceLegalMoves))
                         {
                             UpdateBoard(sourceIndex, targetIndex);
@@ -840,7 +839,7 @@ namespace Chess.EngineCore
                         }
                         return false;
 
-                    case "wB" or "bb":
+                    case "B" or "b":
                         // TODO: check for bug here --> :| 
                         if (GetBishop(sourceIndex, targetIndex, dif, pieceLegalMoves, sSquare, tSquare))
                         {
@@ -849,7 +848,7 @@ namespace Chess.EngineCore
                         }
                         return false;
 
-                    case "wR" or "br":
+                    case "R" or "r":
                         if (GetRook(sourceIndex, targetIndex, dif, sSquare, tSquare))
                         {
                             if(BlackKingCastle == true || BlackQueenCastle == true)
@@ -880,7 +879,7 @@ namespace Chess.EngineCore
                         return false;
 
                     // Easier to implement in separate functions.
-                    case "wP":
+                    case "P":
                         if (GetWhitePawn(sourceIndex, targetIndex, dif, pieceLegalMoves))
                         {
                             if(dif == -16)
@@ -897,7 +896,7 @@ namespace Chess.EngineCore
                         return false;
 
 
-                    case "bp":
+                    case "p":
                         if (GetBlackPawn(sourceIndex, targetIndex, dif, pieceLegalMoves))
                         {
                             if (dif == 16)
@@ -914,7 +913,7 @@ namespace Chess.EngineCore
                         return false;
 
 
-                    case "wK" or "bk":
+                    case "K" or "k":
                         if (GetKing(sourceIndex, targetIndex, dif, sSquare, pieceLegalMoves))
                         {
                             Console.WriteLine($"Black --> KSide{BlackKingCastle}  QSide{BlackQueenCastle}");
@@ -925,7 +924,7 @@ namespace Chess.EngineCore
                         }
                         return false;
 
-                    case "wQ" or "bq":
+                    case "Q" or "q":
                         if (GetQueen(sourceIndex, targetIndex, dif, sSquare, tSquare, pieceLegalMoves))
                         {
                             UpdateBoard(sourceIndex, targetIndex);
@@ -948,7 +947,7 @@ namespace Chess.EngineCore
         }
         public void UpdateBoard(int sourceIndex, int targetIndex)
         {
-            if (_board.board[sourceIndex][1].ToString() == "p"|| _board.board[sourceIndex][1].ToString() == "P")
+            if (_board.board[sourceIndex].ToString() == "p"|| _board.board[sourceIndex].ToString() == "P")
             {
                 LastMoveWasPawn = true;
             }
