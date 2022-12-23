@@ -77,27 +77,7 @@ namespace Chess.EngineCore
         {
             return allPieces.IndexOf(piece);
         }
-        public void SetSideColor()
-        {
-            if (!Playing)
-            {
-                Console.WriteLine("Choose color");
-                var color = Console.ReadLine();
-                // Data checking will be here, for now assuming inputs are correct
-                if (color == "white")
-                {
-                    HumanColor = "white";
-                    MachineColor = "Black";
-                }
-                else
-                {
-                    HumanColor = "black";
-                    MachineColor = "white";
-                }
-                Playing = true;
-            }
-        // Will set a side color from Fen reader
-        }
+
 
         // 1) Converts Fen to Board
         // 2) Reads the board and creates Instance of each pieces
