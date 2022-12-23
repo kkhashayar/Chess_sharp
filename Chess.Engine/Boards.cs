@@ -49,6 +49,8 @@ namespace Chess.EngineCore
                 }
                 return ChessBoard;
             }
+
+
             public string GetCoordinates(int squareIndex)
             {
                 if (IsValidIndex(squareIndex))
