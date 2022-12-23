@@ -54,7 +54,7 @@ namespace Chess.EngineCore
         public int[] ranks = new int[8] { 8, 7, 6, 5, 4, 3, 2, 1 };
 
         // All pieces as a string
-        public List<string> allPieces = new List<string> { "wP", "wN", "wB", "wR", "wQ", "wK", "bp", "bn", "bb", "br", "bq", "bk" };
+        public List<string> allPieces = new List<string> { "P", "N", "B", "R", "Q", "K", "p", "n", "b", "r", "q", "k" };
 
         // Jagged array, holding directions of pieces, match based on indexes.
         public int[][] LegalMoves = new int[][]
