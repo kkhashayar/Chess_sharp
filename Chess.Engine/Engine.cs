@@ -108,7 +108,7 @@ namespace Chess.EngineCore
             {
                 string positioinCoords = _board.GetCoordinates(i);
                 var row = positioinCoords[1].ToString();
-                if (_board.board[i] != "..")
+                if (_board.board[i] != ".")
                 {
                     if (_board.board[i] == "N")
                     {
@@ -337,7 +337,7 @@ namespace Chess.EngineCore
                             break;
                         }
                     }
-                    if (_pathelements.All(x => x == "..") || _pathelements.Count == 0)
+                    if (_pathelements.All(x => x == ".") || _pathelements.Count == 0)
                     {
                         return true;
                     }
@@ -360,7 +360,7 @@ namespace Chess.EngineCore
                             break;
                         }
                     }
-                    if (_pathelements.All(x => x == "..") || _pathelements.Count == 0)
+                    if (_pathelements.All(x => x == ".") || _pathelements.Count == 0)
                     {
                         return true;
                     }
@@ -387,7 +387,7 @@ namespace Chess.EngineCore
                             break;
                         }
                     }
-                    if (_pathelements.All(x => x == "..") || _pathelements.Count == 0)
+                    if (_pathelements.All(x => x == ".") || _pathelements.Count == 0)
                     {
                         return true;
                     }
@@ -408,7 +408,7 @@ namespace Chess.EngineCore
                             break;
                         }
                     }
-                    if (_pathelements.All(x => x == "..") || _pathelements.Count == -0)
+                    if (_pathelements.All(x => x == ".") || _pathelements.Count == -0)
                     {
                         return true;
                     }
@@ -445,7 +445,7 @@ namespace Chess.EngineCore
                                 }
                             }
                         }
-                        if (_pathelements.All(x => x == "..") || _pathelements.Count == 0)
+                        if (_pathelements.All(x => x == ".") || _pathelements.Count == 0)
                         {
                             return true;
                         }
@@ -464,7 +464,7 @@ namespace Chess.EngineCore
                                 }
                             }
                         }
-                        if (_pathelements.All(x => x == "..") || _pathelements.Count == 0)
+                        if (_pathelements.All(x => x == ".") || _pathelements.Count == 0)
                         {
 
                             return true;
@@ -488,7 +488,7 @@ namespace Chess.EngineCore
                                 }
                             }
                         }
-                        if (_pathelements.All(x => x == "..") || _pathelements.Count == 0)
+                        if (_pathelements.All(x => x == ".") || _pathelements.Count == 0)
                         {
                             return true;
                         }
@@ -507,7 +507,7 @@ namespace Chess.EngineCore
                             }
                         }
                     }
-                    if (_pathelements.All(x => x == "..") || _pathelements.Count == 0)
+                    if (_pathelements.All(x => x == ".") || _pathelements.Count == 0)
                     {
                         return true;
                     }
@@ -564,12 +564,12 @@ namespace Chess.EngineCore
                     Console.ReadKey();
                     if (dif == -2
                         && WhiteQueenCastle == true
-                        && _board.board[sourceIndex - 1].ToString() == ".."
-                        && _board.board[sourceIndex - 2].ToString() == ".."
-                        && _board.board[sourceIndex - 3].ToString() == ".."
+                        && _board.board[sourceIndex - 1].ToString() == "."
+                        && _board.board[sourceIndex - 2].ToString() == "."
+                        && _board.board[sourceIndex - 3].ToString() == "."
                         && _board.board[56] == "R")
                     {
-                        _board.board[56] = "..";
+                        _board.board[56] = ".";
                         _board.board[59] = "R";
                         // King side castle possible "short" 
                         // Moving the king, what a bout the Rook?
@@ -580,13 +580,15 @@ namespace Chess.EngineCore
 
                     else if (dif == +2
                         && WhiteKingCastle == true
-                        && _board.board[sourceIndex + 1].ToString() == ".."
-                        && _board.board[sourceIndex + 2].ToString() == ".."
+                        && _board.board[sourceIndex + 1].ToString() == "."
+                        && _board.board[sourceIndex + 2].ToString() == "."
                         && _board.board[63] == "R")
                     {
-                        _board.board[63] = "..";
+                        _board.board[63] = ".";
                         _board.board[61] = "R";
                         WhiteQueenCastle = false;
+
+
                         WhiteKingCastle = false;
                         // Queenside castle possible "long"
                         return true;
@@ -602,12 +604,12 @@ namespace Chess.EngineCore
                     // Queen side castle 
                     if (dif == -2
                         && BlackQueenCastle == true
-                        && _board.board[sourceIndex - 1].ToString() == ".."
-                        && _board.board[sourceIndex - 2].ToString() == ".."
-                        && _board.board[sourceIndex - 3].ToString() == ".."
+                        && _board.board[sourceIndex - 1].ToString() == "."
+                        && _board.board[sourceIndex - 2].ToString() == "."
+                        && _board.board[sourceIndex - 3].ToString() == "."
                         && _board.board[0] == "r")
                     {
-                        _board.board[0] = "..";
+                        _board.board[0] = ".";
                         _board.board[3] = "r";
                         BlackKingCastle = false;
                         BlackQueenCastle = false;   
@@ -617,11 +619,11 @@ namespace Chess.EngineCore
                     // King side castle
                     else if (dif == +2
                         && BlackKingCastle == true
-                        && _board.board[sourceIndex + 1].ToString() == ".."
-                        && _board.board[sourceIndex + 2].ToString() == ".."
+                        && _board.board[sourceIndex + 1].ToString() == "."
+                        && _board.board[sourceIndex + 2].ToString() == "."
                         && _board.board[7] == "r")
                     {
-                        _board.board[7] = "..";
+                        _board.board[7] = ".";
                         _board.board[5] = "r";
                         BlackKingCastle = false;
                         BlackQueenCastle = false;
@@ -655,23 +657,23 @@ namespace Chess.EngineCore
                     var rightgap = TargetSourceIndex += 17;
                     if( leftgap == sourceIndex || rightgap == sourceIndex)
                     {
-                        if (_board.board[targetIndex].ToString() == ".." && LastMoveWasPawn == true && PawnFirstMove == true)
+                        if (_board.board[targetIndex].ToString() == "." && LastMoveWasPawn == true && PawnFirstMove == true)
                         {
                             if (_board.board[sourceIndex + 1] != null && _board.board[sourceIndex + 1].ToString() == "p")
                             {
-                                _board.board[sourceIndex + 1] = "..";
+                                _board.board[sourceIndex + 1] = ".";
                                 return true;
                             }
                             else if (_board.board[sourceIndex - 1] != null && _board.board[sourceIndex - 1].ToString() == "p")
                             {
-                                _board.board[sourceIndex - 1] = "..";
+                                _board.board[sourceIndex - 1] = ".";
                                 return true;
                             }
                             return false;
                         }
                     }   
                     // Capture condition
-                    if (_board.board[targetIndex].ToString() != "..")
+                    if (_board.board[targetIndex].ToString() != ".")
                     {
                         return true;
                     }
@@ -683,7 +685,7 @@ namespace Chess.EngineCore
                 {
                     return true;
                 }
-                else if(dif == -8 && _board.board[targetIndex].ToString() == "..")
+                else if(dif == -8 && _board.board[targetIndex].ToString() == ".")
                 {
                     return true;
                 }
@@ -703,23 +705,23 @@ namespace Chess.EngineCore
                     var rightgap = TargetSourceIndex -= 17;
                     if (leftgap == TargetSourceIndex || rightgap == TargetSourceIndex)
                     {
-                        if (_board.board[targetIndex].ToString() == ".." && LastMoveWasPawn == true && PawnFirstMove == true)
+                        if (_board.board[targetIndex].ToString() == "." && LastMoveWasPawn == true && PawnFirstMove == true)
                         {
                             if (_board.board[sourceIndex + 1] != null && _board.board[sourceIndex + 1].ToString() == "P")
                             {
-                                _board.board[sourceIndex + 1] = "..";
+                                _board.board[sourceIndex + 1] = ".";
                                 return true;
                             }
                             else if (_board.board[sourceIndex - 1] != null && _board.board[sourceIndex - 1].ToString() == "P")
                             {
-                                _board.board[sourceIndex - 1] = "..";
+                                _board.board[sourceIndex - 1] = ".";
                                 return true;
                             }
                             return false;
                         }
                     }
                     // Capture condition
-                    if (_board.board[targetIndex].ToString() != "..")
+                    if (_board.board[targetIndex].ToString() != ".")
                     {
                         return true;
                     }
@@ -731,7 +733,7 @@ namespace Chess.EngineCore
                 {
                     return true;
                 }
-                else if (dif == +8 && _board.board[targetIndex].ToString() == "..")
+                else if (dif == +8 && _board.board[targetIndex].ToString() == ".")
                 {
                     return true;
                 }
@@ -963,7 +965,7 @@ namespace Chess.EngineCore
 
             History.Add((moveNotation));
             _board.board[targetIndex] = _board.board[sourceIndex];
-            _board.board[sourceIndex] = "..";
+            _board.board[sourceIndex] = ".";
         }
         // Getting input from user
         public string GetMove()
@@ -979,7 +981,7 @@ namespace Chess.EngineCore
                     if (move.Count() == 4 &&
                         _board.coordinates.Contains(move.Substring(0, 2)) &&
                         _board.coordinates.Contains(move.Substring(0, 2)) &&
-                        _board.board[sourceSquare] != "..")
+                        _board.board[sourceSquare] != ".")
                     { return move; }
                 }
                 catch (System.ArgumentOutOfRangeException) { }
