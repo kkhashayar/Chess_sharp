@@ -111,7 +111,7 @@ namespace Chess.EngineCore
                 var row = positioinCoords[1].ToString();
                 if (_board.board[i] != "..")
                 {
-                    if (_board.board[i] == "wN")
+                    if (_board.board[i] == "N")
                     {
                         var _piece = new Piece()
                         {
@@ -125,7 +125,7 @@ namespace Chess.EngineCore
                         };
                         Position.Add(_piece);
                     }
-                    else if (_board.board[i] == "bn")
+                    else if (_board.board[i] == "n")
                     {
                         var _piece = new Piece()
                         {
@@ -139,7 +139,7 @@ namespace Chess.EngineCore
                         };
                         Position.Add(_piece);
                     }
-                    else if (_board.board[i] == "wR")
+                    else if (_board.board[i] == "R")
                     {
                         var _piece = new Piece()
                         {
@@ -153,7 +153,7 @@ namespace Chess.EngineCore
                         };
                         Position.Add(_piece);
                     }
-                    else if (_board.board[i] == "br")
+                    else if (_board.board[i] == "r")
                     {
                         var _piece = new Piece()
                         {
@@ -167,7 +167,7 @@ namespace Chess.EngineCore
                         };
                         Position.Add(_piece);
                     }
-                    else if (_board.board[i] == "wB")
+                    else if (_board.board[i] == "B")
                     {
                         var _piece = new Piece()
                         {
@@ -181,7 +181,7 @@ namespace Chess.EngineCore
                         };
                         Position.Add(_piece);
                     }
-                    else if (_board.board[i] == "bb")
+                    else if (_board.board[i] == "b")
                     {
                         var _piece = new Piece()
                         {
@@ -195,7 +195,7 @@ namespace Chess.EngineCore
                         };
                         Position.Add(_piece);
                     }
-                    else if (_board.board[i] == "wQ")
+                    else if (_board.board[i] == "Q")
                     {
                         var _piece = new Piece()
                         {
@@ -209,7 +209,7 @@ namespace Chess.EngineCore
                         };
                         Position.Add(_piece);
                     }
-                    else if (_board.board[i] == "bq")
+                    else if (_board.board[i] == "q")
                     {
                         var _piece = new Piece()
                         {
@@ -223,7 +223,7 @@ namespace Chess.EngineCore
                         };
                         Position.Add(_piece);
                     }
-                    else if (_board.board[i] == "wP")
+                    else if (_board.board[i] == "P")
                     {
                         var _piece = new Piece()
                         {
@@ -247,7 +247,7 @@ namespace Chess.EngineCore
 
                         Position.Add(_piece);
                     }
-                    else if (_board.board[i] == "bp")
+                    else if (_board.board[i] == "p")
                     {
                         var _piece = new Piece()
                         {
@@ -271,7 +271,7 @@ namespace Chess.EngineCore
                         Position.Add(_piece);
                     }
 
-                    else if (_board.board[i] == "wK")
+                    else if (_board.board[i] == "K")
                     {
                         var _piece = new Piece()
                         {
@@ -285,7 +285,7 @@ namespace Chess.EngineCore
                         };
                         Position.Add(_piece);
                     }
-                    else if (_board.board[i] == "bk")
+                    else if (_board.board[i] == "k")
                     {
                         var _piece = new Piece()
                         {
