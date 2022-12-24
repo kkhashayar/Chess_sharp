@@ -22,17 +22,13 @@ namespace Chess.EngineCore
             _piece = piece;
         }
 
+        // In Bishop and Rook moves
         public List<string> _pathelements = new List<string>();
         public string HumanColor { get; set; } = string.Empty; // Not sure about these two properties1
         public string MachineColor { get; set; } = string.Empty;
-        public bool Playing { get; set; } = false;
         public int Ply { get; set; }
         public string? Turn { get; set; }
         public List<string>? History { get; set; }
-        
-        public List<string> Move { get; set; } // Useful in move history
-        public string SSquare { get; set; } = string.Empty;
-        public string TSquare { get; set; } = string.Empty;
         
         // En Passant Flag
         public bool LastMoveWasPawn { get; set; } = true;
@@ -57,7 +53,7 @@ namespace Chess.EngineCore
         public List<string> allPieces = new List<string> { "P", "N", "B", "R", "Q", "K", "p", "n", "b", "r", "q", "k" };
 
         // Jagged array, holding directions of pieces, match based on indexes.
-        public int[][] LegalMoves = new int[][]
+        private int[][] LegalMoves = new int[][]
         {
             new int[] {-8,-16,-7,-9}, // white Pawn
             new int[] {-6,-10,-15,-17,+6,+10,+15,+17 }, // White Knight
@@ -968,8 +964,10 @@ namespace Chess.EngineCore
             }
             return "Err";
         }
-        public void HumanTurn()
+
+        public void WhiteTurn()
         {
+            
             string move = GetMove();
             if (move != "Err")
             {
@@ -982,11 +980,28 @@ namespace Chess.EngineCore
             }
         }
 
-        public void MachineTurn()
+        public void BlackTurn()
         {
             Console.WriteLine("Machine turn");
-            Ply += 1;
-            Console.ReadLine();
+            Console.ReadKey();
+        }
+
+        public void GetSide()
+        {
+            //HumanTurn();    
+            if(Turn == "w")
+            {
+                Console.WriteLine(Turn);
+                Console.ReadKey();
+                WhiteTurn();
+            }
+            else
+            {
+                BlackTurn();
+                Console.WriteLine(Turn);
+                Console.ReadKey();
+            }
+            
         }
 
         public void Run()
@@ -994,7 +1009,7 @@ namespace Chess.EngineCore
             bool running = true;
             while (running)
             {
-                HumanTurn();
+                GetSide();
             }
 
         }
