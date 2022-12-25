@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 using static Chess.EngineCore.Boards;
+using static Chess.EngineCore.MoveGen;
 
 namespace Chess.EngineCore
 {
@@ -16,10 +17,12 @@ namespace Chess.EngineCore
     {
         private Board _board;
         private Piece _piece;
+       
         public Engine(Board board, Piece piece)
         {
             _board = board;
             _piece = piece;
+            
         }
 
         // In Bishop and Rook moves
@@ -984,6 +987,7 @@ namespace Chess.EngineCore
         public void BlackTurn()
         {
             Console.WriteLine("Black turn");
+            
             Console.ReadKey();
         }
 
