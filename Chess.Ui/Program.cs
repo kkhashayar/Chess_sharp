@@ -38,7 +38,7 @@ void PrintBoard()
 
 fenParser.SetupBoard("");
 
-fenBuilder.GnerateFen();
+//fenBuilder.GnerateFen();
 
 engine.History = new List<string>();
 engine.Run();

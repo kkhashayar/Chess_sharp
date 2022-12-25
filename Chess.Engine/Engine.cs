@@ -26,6 +26,7 @@ namespace Chess.EngineCore
         public List<string> _pathelements = new List<string>();
         public string HumanColor { get; set; } = string.Empty; // Not sure about these two properties1
         public string MachineColor { get; set; } = string.Empty;
+        public bool FenFlag { get; set; } = true;
         public int Ply { get; set; }
         public string? Turn { get; set; }
         public List<string>? History { get; set; }
@@ -982,26 +983,46 @@ namespace Chess.EngineCore
 
         public void BlackTurn()
         {
-            Console.WriteLine("Machine turn");
+            Console.WriteLine("Black turn");
             Console.ReadKey();
         }
 
-        public void GetSide()
+        public string GetSide()
         {
-            //HumanTurn();    
-            if(Turn == "w")
+            // First time running the game, setting the Turn from Fen
+            // Next we set it from Ply
+            // Ply sets from History.count
+            if (FenFlag)
             {
-                Console.WriteLine(Turn);
-                Console.ReadKey();
-                WhiteTurn();
-            }
-            else
-            {
-                BlackTurn();
-                Console.WriteLine(Turn);
-                Console.ReadKey();
+                if (Turn == "w")
+                {
+                    Console.WriteLine(Turn);
+                    Console.ReadKey();
+                    WhiteTurn();
+                }
+                else
+                {
+                    BlackTurn();
+                    Console.WriteLine(Turn);
+                    Console.ReadKey();
+                }
+                FenFlag= false;
             }
             
+            else if(History != null  || History.Count != 0)
+            {
+                Ply = History.Count;
+                if(Ply %2 == 0)
+                {
+                    Turn = "w";
+                }
+                else
+                {
+                    Turn = "b";
+                }
+            }
+
+            return Turn;
         }
 
         public void Run()
@@ -1009,7 +1030,11 @@ namespace Chess.EngineCore
             bool running = true;
             while (running)
             {
-                GetSide();
+                Turn = GetSide();
+                if (Turn == "w") { WhiteTurn(); }
+                else { BlackTurn(); }
+                Console.WriteLine(Turn);
+                Console.ReadKey();
             }
 
         }
