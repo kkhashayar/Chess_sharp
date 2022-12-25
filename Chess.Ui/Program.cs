@@ -12,7 +12,8 @@ var board = new Chess.EngineCore.Boards.Board();
 Piece piece = new Piece();
 
 Engine engine = new Engine(board, piece);
-
+var fenParser = new Chess.EngineCore.FenParser(board, engine, "");
+var fenBuilder = new Chess.EngineCore.FenBuilder(board, engine);
 
 board.BuildChessBoard(64);
 
@@ -34,7 +35,10 @@ void PrintBoard()
 
 //PrintBoard();
 
-var fenParser = new Chess.EngineCore.FenParser(board, engine, "");
+
 fenParser.SetupBoard("");
+
+fenBuilder.GnerateFen();
+
 engine.History = new List<string>();
 engine.Run();
