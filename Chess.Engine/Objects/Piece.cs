@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Chess.EngineCore
+namespace Chess.EngineCore.Objects
 {
     public struct Piece
     {
@@ -19,13 +19,5 @@ namespace Chess.EngineCore
         public string PositionCoords = string.Empty;
     }
 
-    public struct MoveObject
-    {
-        public MoveObject() {}
-        public int StartIndex = 0; 
-        public int EndIndex = 0;
-        public string StartCoordinate = string.Empty;
-        public string EndCoordinate = string.Empty;
-        public int difference = 0;
-    }
+   
 }

@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Chess.EngineCore.Boards;
-using static Chess.EngineCore.Piece;
+using static Chess.EngineCore.Objects.Piece;
 
-namespace Chess.EngineCore
+namespace Chess.EngineCore.EngineParts
 {
     public class MoveGen
     {
-        Board board = new Chess.EngineCore.Boards.Board();
-        
+        Board board = new Board();
+
 
         public List<int> GenAllMoves()
         {

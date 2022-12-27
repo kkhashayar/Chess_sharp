@@ -8,8 +8,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using Chess.EngineCore.Objects;
 using static Chess.EngineCore.Boards;
-using static Chess.EngineCore.MoveGen;
+using static Chess.EngineCore.EngineParts.MoveGen;
 
 namespace Chess.EngineCore
 {

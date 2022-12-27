@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static Chess.EngineCore.Boards;
 
-namespace Chess.EngineCore
+namespace Chess.EngineCore.Helpers
 {
     public class FenBuilder
     {
@@ -16,7 +16,8 @@ namespace Chess.EngineCore
         {
             _board = board;
             _engine = engine;
-        }List<string> fenList = new List<string>();
+        }
+        List<string> fenList = new List<string>();
 
 
 
@@ -27,7 +28,7 @@ namespace Chess.EngineCore
         /// </summary>
         public void GnerateFen()
         {
-            Console.WriteLine("fen builder");   
+            Console.WriteLine("fen builder");
         }
     }
 }

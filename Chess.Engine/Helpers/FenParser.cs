@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static Chess.EngineCore.Boards;
 
-namespace Chess.EngineCore
+namespace Chess.EngineCore.Helpers
 {
     public class FenParser
     {
