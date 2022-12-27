@@ -15,15 +15,8 @@ namespace Chess.EngineCore
 
         public List<int> GenAllMoves()
         {
-            List<Piece> position = new List<Piece>();
-
-            foreach (var square in  )
-            {
-
-            }
-
-            List<int> move = new List<int>();
-            return move;
+            List<int> temp = new List<int>();
+            return temp;
         }
     }
 }
