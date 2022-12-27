@@ -1,8 +1,9 @@
 ﻿
 using Chess.EngineCore;
+using Chess.EngineCore.Objects;
 using System.Text;
 using static Chess.EngineCore.Boards;
-using static Chess.EngineCore.FenParser;
+using static Chess.EngineCore.Helpers.FenParser;
 
 
 var board = new Chess.EngineCore.Boards.Board();
@@ -12,7 +13,8 @@ var board = new Chess.EngineCore.Boards.Board();
 Piece piece = new Piece();
 
 Engine engine = new Engine(board, piece);
-
+var fenParser = new Chess.EngineCore.Helpers.FenParser(board, engine, "");
+var fenBuilder = new Chess.EngineCore.Helpers.FenBuilder(board, engine);
 
 board.BuildChessBoard(64);
 
@@ -34,7 +36,10 @@ void PrintBoard()
 
 //PrintBoard();
 
-var fenParser = new Chess.EngineCore.FenParser(board, engine, "");
-fenParser.SetupBoard("8/4p3/8/8/8/8/4P3/8 w - - 0 1");
+
+fenParser.SetupBoard("");
+
+//fenBuilder.GnerateFen();
+
 engine.History = new List<string>();
 engine.Run();

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Chess.EngineCore
+namespace Chess.EngineCore.Objects
 {
     public struct Piece
     {
@@ -18,4 +18,6 @@ namespace Chess.EngineCore
         public int PositionIndex = 0;   
         public string PositionCoords = string.Empty;
     }
+
+   
 }

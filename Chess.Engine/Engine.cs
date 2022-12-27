@@ -8,7 +8,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using Chess.EngineCore.Objects;
 using static Chess.EngineCore.Boards;
+using static Chess.EngineCore.EngineParts.MoveGen;
 
 namespace Chess.EngineCore
 {
@@ -16,23 +18,22 @@ namespace Chess.EngineCore
     {
         private Board _board;
         private Piece _piece;
+       
         public Engine(Board board, Piece piece)
         {
             _board = board;
             _piece = piece;
+            
         }
 
+        // In Bishop and Rook moves
         public List<string> _pathelements = new List<string>();
         public string HumanColor { get; set; } = string.Empty; // Not sure about these two properties1
         public string MachineColor { get; set; } = string.Empty;
-        public bool Playing { get; set; } = false;
+        public bool FenFlag { get; set; } = true;
         public int Ply { get; set; }
         public string? Turn { get; set; }
         public List<string>? History { get; set; }
-        
-        public List<string> Move { get; set; } // Useful in move history
-        public string SSquare { get; set; } = string.Empty;
-        public string TSquare { get; set; } = string.Empty;
         
         // En Passant Flag
         public bool LastMoveWasPawn { get; set; } = true;
@@ -57,7 +58,7 @@ namespace Chess.EngineCore
         public List<string> allPieces = new List<string> { "P", "N", "B", "R", "Q", "K", "p", "n", "b", "r", "q", "k" };
 
         // Jagged array, holding directions of pieces, match based on indexes.
-        public int[][] LegalMoves = new int[][]
+        private int[][] LegalMoves = new int[][]
         {
             new int[] {-8,-16,-7,-9}, // white Pawn
             new int[] {-6,-10,-15,-17,+6,+10,+15,+17 }, // White Knight
@@ -77,27 +78,7 @@ namespace Chess.EngineCore
         {
             return allPieces.IndexOf(piece);
         }
-        public void SetSideColor()
-        {
-            if (!Playing)
-            {
-                Console.WriteLine("Choose color");
-                var color = Console.ReadLine();
-                // Data checking will be here, for now assuming inputs are correct
-                if (color == "white")
-                {
-                    HumanColor = "white";
-                    MachineColor = "Black";
-                }
-                else
-                {
-                    HumanColor = "black";
-                    MachineColor = "white";
-                }
-                Playing = true;
-            }
-        // Will set a side color from Fen reader
-        }
+
 
         // 1) Converts Fen to Board
         // 2) Reads the board and creates Instance of each pieces
@@ -108,7 +89,7 @@ namespace Chess.EngineCore
             {
                 string positioinCoords = _board.GetCoordinates(i);
                 var row = positioinCoords[1].ToString();
-                if (_board.board[i] != "..")
+                if (_board.board[i] != ".")
                 {
                     if (_board.board[i] == "N")
                     {
@@ -337,7 +318,7 @@ namespace Chess.EngineCore
                             break;
                         }
                     }
-                    if (_pathelements.All(x => x == "..") || _pathelements.Count == 0)
+                    if (_pathelements.All(x => x == ".") || _pathelements.Count == 0)
                     {
                         return true;
                     }
@@ -360,7 +341,7 @@ namespace Chess.EngineCore
                             break;
                         }
                     }
-                    if (_pathelements.All(x => x == "..") || _pathelements.Count == 0)
+                    if (_pathelements.All(x => x == ".") || _pathelements.Count == 0)
                     {
                         return true;
                     }
@@ -387,7 +368,7 @@ namespace Chess.EngineCore
                             break;
                         }
                     }
-                    if (_pathelements.All(x => x == "..") || _pathelements.Count == 0)
+                    if (_pathelements.All(x => x == ".") || _pathelements.Count == 0)
                     {
                         return true;
                     }
@@ -408,7 +389,7 @@ namespace Chess.EngineCore
                             break;
                         }
                     }
-                    if (_pathelements.All(x => x == "..") || _pathelements.Count == -0)
+                    if (_pathelements.All(x => x == ".") || _pathelements.Count == -0)
                     {
                         return true;
                     }
@@ -445,7 +426,7 @@ namespace Chess.EngineCore
                                 }
                             }
                         }
-                        if (_pathelements.All(x => x == "..") || _pathelements.Count == 0)
+                        if (_pathelements.All(x => x == ".") || _pathelements.Count == 0)
                         {
                             return true;
                         }
@@ -464,7 +445,7 @@ namespace Chess.EngineCore
                                 }
                             }
                         }
-                        if (_pathelements.All(x => x == "..") || _pathelements.Count == 0)
+                        if (_pathelements.All(x => x == ".") || _pathelements.Count == 0)
                         {
 
                             return true;
@@ -488,7 +469,7 @@ namespace Chess.EngineCore
                                 }
                             }
                         }
-                        if (_pathelements.All(x => x == "..") || _pathelements.Count == 0)
+                        if (_pathelements.All(x => x == ".") || _pathelements.Count == 0)
                         {
                             return true;
                         }
@@ -507,7 +488,7 @@ namespace Chess.EngineCore
                             }
                         }
                     }
-                    if (_pathelements.All(x => x == "..") || _pathelements.Count == 0)
+                    if (_pathelements.All(x => x == ".") || _pathelements.Count == 0)
                     {
                         return true;
                     }
@@ -564,12 +545,12 @@ namespace Chess.EngineCore
                     Console.ReadKey();
                     if (dif == -2
                         && WhiteQueenCastle == true
-                        && _board.board[sourceIndex - 1].ToString() == ".."
-                        && _board.board[sourceIndex - 2].ToString() == ".."
-                        && _board.board[sourceIndex - 3].ToString() == ".."
+                        && _board.board[sourceIndex - 1].ToString() == "."
+                        && _board.board[sourceIndex - 2].ToString() == "."
+                        && _board.board[sourceIndex - 3].ToString() == "."
                         && _board.board[56] == "R")
                     {
-                        _board.board[56] = "..";
+                        _board.board[56] = ".";
                         _board.board[59] = "R";
                         // King side castle possible "short" 
                         // Moving the king, what a bout the Rook?
@@ -580,13 +561,15 @@ namespace Chess.EngineCore
 
                     else if (dif == +2
                         && WhiteKingCastle == true
-                        && _board.board[sourceIndex + 1].ToString() == ".."
-                        && _board.board[sourceIndex + 2].ToString() == ".."
+                        && _board.board[sourceIndex + 1].ToString() == "."
+                        && _board.board[sourceIndex + 2].ToString() == "."
                         && _board.board[63] == "R")
                     {
-                        _board.board[63] = "..";
+                        _board.board[63] = ".";
                         _board.board[61] = "R";
                         WhiteQueenCastle = false;
+
+
                         WhiteKingCastle = false;
                         // Queenside castle possible "long"
                         return true;
@@ -602,12 +585,12 @@ namespace Chess.EngineCore
                     // Queen side castle 
                     if (dif == -2
                         && BlackQueenCastle == true
-                        && _board.board[sourceIndex - 1].ToString() == ".."
-                        && _board.board[sourceIndex - 2].ToString() == ".."
-                        && _board.board[sourceIndex - 3].ToString() == ".."
+                        && _board.board[sourceIndex - 1].ToString() == "."
+                        && _board.board[sourceIndex - 2].ToString() == "."
+                        && _board.board[sourceIndex - 3].ToString() == "."
                         && _board.board[0] == "r")
                     {
-                        _board.board[0] = "..";
+                        _board.board[0] = ".";
                         _board.board[3] = "r";
                         BlackKingCastle = false;
                         BlackQueenCastle = false;   
@@ -617,11 +600,11 @@ namespace Chess.EngineCore
                     // King side castle
                     else if (dif == +2
                         && BlackKingCastle == true
-                        && _board.board[sourceIndex + 1].ToString() == ".."
-                        && _board.board[sourceIndex + 2].ToString() == ".."
+                        && _board.board[sourceIndex + 1].ToString() == "."
+                        && _board.board[sourceIndex + 2].ToString() == "."
                         && _board.board[7] == "r")
                     {
-                        _board.board[7] = "..";
+                        _board.board[7] = ".";
                         _board.board[5] = "r";
                         BlackKingCastle = false;
                         BlackQueenCastle = false;
@@ -655,23 +638,23 @@ namespace Chess.EngineCore
                     var rightgap = TargetSourceIndex += 17;
                     if( leftgap == sourceIndex || rightgap == sourceIndex)
                     {
-                        if (_board.board[targetIndex].ToString() == ".." && LastMoveWasPawn == true && PawnFirstMove == true)
+                        if (_board.board[targetIndex].ToString() == "." && LastMoveWasPawn == true && PawnFirstMove == true)
                         {
                             if (_board.board[sourceIndex + 1] != null && _board.board[sourceIndex + 1].ToString() == "p")
                             {
-                                _board.board[sourceIndex + 1] = "..";
+                                _board.board[sourceIndex + 1] = ".";
                                 return true;
                             }
                             else if (_board.board[sourceIndex - 1] != null && _board.board[sourceIndex - 1].ToString() == "p")
                             {
-                                _board.board[sourceIndex - 1] = "..";
+                                _board.board[sourceIndex - 1] = ".";
                                 return true;
                             }
                             return false;
                         }
                     }   
                     // Capture condition
-                    if (_board.board[targetIndex].ToString() != "..")
+                    if (_board.board[targetIndex].ToString() != ".")
                     {
                         return true;
                     }
@@ -683,7 +666,7 @@ namespace Chess.EngineCore
                 {
                     return true;
                 }
-                else if(dif == -8 && _board.board[targetIndex].ToString() == "..")
+                else if(dif == -8 && _board.board[targetIndex].ToString() == ".")
                 {
                     return true;
                 }
@@ -703,23 +686,23 @@ namespace Chess.EngineCore
                     var rightgap = TargetSourceIndex -= 17;
                     if (leftgap == TargetSourceIndex || rightgap == TargetSourceIndex)
                     {
-                        if (_board.board[targetIndex].ToString() == ".." && LastMoveWasPawn == true && PawnFirstMove == true)
+                        if (_board.board[targetIndex].ToString() == "." && LastMoveWasPawn == true && PawnFirstMove == true)
                         {
                             if (_board.board[sourceIndex + 1] != null && _board.board[sourceIndex + 1].ToString() == "P")
                             {
-                                _board.board[sourceIndex + 1] = "..";
+                                _board.board[sourceIndex + 1] = ".";
                                 return true;
                             }
                             else if (_board.board[sourceIndex - 1] != null && _board.board[sourceIndex - 1].ToString() == "P")
                             {
-                                _board.board[sourceIndex - 1] = "..";
+                                _board.board[sourceIndex - 1] = ".";
                                 return true;
                             }
                             return false;
                         }
                     }
                     // Capture condition
-                    if (_board.board[targetIndex].ToString() != "..")
+                    if (_board.board[targetIndex].ToString() != ".")
                     {
                         return true;
                     }
@@ -731,7 +714,7 @@ namespace Chess.EngineCore
                 {
                     return true;
                 }
-                else if (dif == +8 && _board.board[targetIndex].ToString() == "..")
+                else if (dif == +8 && _board.board[targetIndex].ToString() == ".")
                 {
                     return true;
                 }
@@ -795,7 +778,7 @@ namespace Chess.EngineCore
                 }
                 Console.WriteLine(ranks[rank]);
             }
-            Console.WriteLine("\n A   B   C   D   E   F   G   H");
+            Console.WriteLine("\nA  B  C  D  E  F  G  H");
             Console.WriteLine();
             
             
@@ -963,7 +946,7 @@ namespace Chess.EngineCore
 
             History.Add((moveNotation));
             _board.board[targetIndex] = _board.board[sourceIndex];
-            _board.board[sourceIndex] = "..";
+            _board.board[sourceIndex] = ".";
         }
         // Getting input from user
         public string GetMove()
@@ -979,15 +962,17 @@ namespace Chess.EngineCore
                     if (move.Count() == 4 &&
                         _board.coordinates.Contains(move.Substring(0, 2)) &&
                         _board.coordinates.Contains(move.Substring(0, 2)) &&
-                        _board.board[sourceSquare] != "..")
+                        _board.board[sourceSquare] != ".")
                     { return move; }
                 }
                 catch (System.ArgumentOutOfRangeException) { }
             }
             return "Err";
         }
-        public void HumanTurn()
+
+        public void WhiteTurn()
         {
+            
             string move = GetMove();
             if (move != "Err")
             {
@@ -1000,11 +985,49 @@ namespace Chess.EngineCore
             }
         }
 
-        public void MachineTurn()
+        public void BlackTurn()
         {
-            Console.WriteLine("Machine turn");
-            Ply += 1;
-            Console.ReadLine();
+            Console.WriteLine("Black turn");
+            
+            Console.ReadKey();
+        }
+
+        public string GetSide()
+        {
+            // First time running the game, setting the Turn from Fen
+            // Next we set it from Ply
+            // Ply sets from History.count
+            if (FenFlag)
+            {
+                if (Turn == "w")
+                {
+                    Console.WriteLine(Turn);
+                    Console.ReadKey();
+                    WhiteTurn();
+                }
+                else
+                {
+                    BlackTurn();
+                    Console.WriteLine(Turn);
+                    Console.ReadKey();
+                }
+                FenFlag= false;
+            }
+            
+            else if(History != null  || History.Count != 0)
+            {
+                Ply = History.Count;
+                if(Ply %2 == 0)
+                {
+                    Turn = "w";
+                }
+                else
+                {
+                    Turn = "b";
+                }
+            }
+
+            return Turn;
         }
 
         public void Run()
@@ -1012,7 +1035,11 @@ namespace Chess.EngineCore
             bool running = true;
             while (running)
             {
-                HumanTurn();
+                Turn = GetSide();
+                if (Turn == "w") { WhiteTurn(); }
+                else { BlackTurn(); }
+                Console.WriteLine(Turn);
+                Console.ReadKey();
             }
 
         }
