@@ -796,13 +796,21 @@ namespace Chess.EngineCore
 
         public bool MakeMove(string sSquare, string tSquare)
         {
+            
             //Console.WriteLine($"Move is: {sSquare}-{tSquare}");
             int sourceIndex = _board.GetBoardIndex(sSquare);
             string piece = _board.board[sourceIndex];
             string pieceColor = piece.Substring(0, 1);
             int targetIndex = _board.GetBoardIndex(tSquare);
             string targetColor = _board.board[targetIndex].Substring(0, 1);
-
+            
+            MoveObject moveObject = new MoveObject
+            {
+                StartIndex = sourceIndex,
+                EndIndex = targetIndex,
+                StartCoordinate = _board.GetCoordinates(sourceIndex),
+                EndCoordinate= _board.GetCoordinates(targetIndex),
+            };
             //1) Checking if there is no same color piece at target square.
             if (pieceColor != targetColor)
             {

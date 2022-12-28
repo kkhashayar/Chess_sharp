@@ -14,5 +14,6 @@ namespace Chess.EngineCore.Objects
         public string StartCoordinate = string.Empty;
         public string EndCoordinate = string.Empty;
         public int difference = 0;
+        public Piece piec;
     }
 }
