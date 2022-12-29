@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using System.Xml;
 using Chess.EngineCore.Objects;
 using static Chess.EngineCore.Boards;
 using static Chess.EngineCore.EngineParts.MoveGen;
@@ -296,24 +297,24 @@ namespace Chess.EngineCore
 
         // Functions responsible for returning each piece moves
 
-        public bool GetRook(int sourceIndex, int targetIndex, int dif, string sSquare, string tSquare)
+        public bool GetRook(MoveObject moveObject)
         {
             // Checks for Rook color and position to change the correspondence castle right
             _pathelements.Clear();
             // Move in files
-            if (sSquare.Substring(0, 1) == tSquare.Substring(0, 1))
+            if (moveObject.OnBoardStartSquare.Substring(0, 1) == moveObject.OnBoardEndSquare.Substring(0, 1))
             {
-                if (sourceIndex > targetIndex)
+                if (moveObject.StartIndex > moveObject.EndIndex)
                 {
                     // step is -8 --> moving up
                     for (int i = 1; i < 8; i++)
                     {
-                        int path = sourceIndex - (i * 8);
-                        if (path > targetIndex)
+                        int path = moveObject.StartIndex - (i * 8);
+                        if (path > moveObject.EndIndex)
                         {
                             _pathelements.Add(_board.board[path]);
                         }
-                        if (path == targetIndex)
+                        if (path == moveObject.EndIndex)
                         {
                             break;
                         }
@@ -325,18 +326,18 @@ namespace Chess.EngineCore
                     return false;
 
                 }
-                if (sourceIndex < targetIndex)
+                if (moveObject.StartIndex < moveObject.EndIndex)
                 {
                     // step is +8 --> moving down
                     for (int i = 1; i < 8; i++)
                     {
-                        int path = sourceIndex + (i * 8);
-                        if (path < targetIndex)
+                        int path = moveObject.StartIndex + (i * 8);
+                        if (path < moveObject.EndIndex)
                         {
                             _pathelements.Add(_board.board[path]);
                         }
 
-                        if (path == targetIndex)
+                        if (path == moveObject.EndIndex)
                         {
                             break;
                         }
@@ -351,19 +352,19 @@ namespace Chess.EngineCore
 
 
             // Move in ranks
-            else if (sSquare.Substring(1, 1) == tSquare.Substring(1, 1))
+            else if (moveObject.OnBoardStartSquare.Substring(1, 1) == moveObject.OnBoardEndSquare.Substring(1, 1))
             {
                 // step is -1 --> moving left
-                if (sourceIndex > targetIndex)
+                if (moveObject.StartIndex > moveObject.EndIndex)
                 {
                     for (int i = 1; i < 8; i++)
                     {
-                        int path = sourceIndex - (i * 1);
-                        if (path > targetIndex)
+                        int path = moveObject.StartIndex - (i * 1);
+                        if (path > moveObject.EndIndex)
                         {
                             _pathelements.Add(_board.board[path]);
                         }
-                        if (path == targetIndex)
+                        if (path == moveObject.EndIndex)
                         {
                             break;
                         }
@@ -374,17 +375,17 @@ namespace Chess.EngineCore
                     }
                     return false;
                 }
-                if (sourceIndex < targetIndex)
+                if (moveObject.StartIndex < moveObject.EndIndex)
                 {
                     // step is +1 --> moving right
                     for (int i = 1; i < 8; i++)
                     {
-                        int path = sourceIndex + (i * 1); // ref here 
-                        if (path > targetIndex)
+                        int path = moveObject.StartIndex + (i * 1); // ref here 
+                        if (path > moveObject.EndIndex)
                         {
                             _pathelements.Add(_board.board[path]);
                         }
-                        if (path == targetIndex)
+                        if (path == moveObject.EndIndex)
                         {
                             break;
                         }
@@ -399,28 +400,28 @@ namespace Chess.EngineCore
             // Castle special move --> 
             return false;
         }
-        public bool GetBishop(int sourceIndex, int targetIndex, int dif, int[] pieceLegalMoves, string sSquare, string tSquare)
+        public bool GetBishop(MoveObject moveObject)
         {
             _pathelements.Clear();
-            int result_of_9 = dif % 9;
-            int result_of_7 = dif % 7;
+            int result_of_9 = moveObject.difference % 9;
+            int result_of_7 = moveObject.difference % 7;
 
-            if (dif % 9 == 0 || dif % 7 == 0 && sSquare.Substring(0, 1) != tSquare.Substring(0, 1)
-                && sSquare.Substring(0, 2) != tSquare.Substring(0, 2)// preventing the piece to move cross the files
-                && sSquare.Substring(1, 1) != tSquare.Substring(1, 1)) // preventing the piece to move cross the ranks
+            if (moveObject.difference % 9 == 0 || moveObject.difference % 7 == 0 && moveObject.OnBoardStartSquare.Substring(0, 1) != moveObject.OnBoardEndSquare.Substring(0, 1)
+                && moveObject.OnBoardStartSquare.Substring(0, 2) != moveObject.OnBoardEndSquare.Substring(0, 2)// preventing the piece to move cross the files
+                && moveObject.OnBoardStartSquare.Substring(1, 1) != moveObject.OnBoardEndSquare.Substring(1, 1)) // preventing the piece to move cross the ranks
             { // I need to parameterize them to one function with, different difs, and side to move
               // +9 up right
               // +7 up left
-                if (sourceIndex > targetIndex)
+                if (moveObject.StartIndex > moveObject.EndIndex)
                 {
-                    if (dif % 9 == 0)
+                    if (moveObject.difference % 9 == 0)
                     {
                         for (int i = 1; i < 8; i++)
                         {
-                            int path = sourceIndex - (9 * i);
-                            if (path >= targetIndex && path <= _board.board.Count)
+                            int path = moveObject.StartIndex - (9 * i);
+                            if (path >= moveObject.EndIndex && path <= _board.board.Count)
                             {
-                                if (path != targetIndex)
+                                if (path != moveObject.EndIndex)
                                 {
                                     _pathelements.Add(_board.board[path]);
                                 }
@@ -431,15 +432,15 @@ namespace Chess.EngineCore
                             return true;
                         }
                     }
-                    if (dif % 7 == 0)
+                    if (moveObject.difference % 7 == 0)
                     {
 
                         for (int i = 1; i < 8; i++)
                         {
-                            int path = sourceIndex - (7 * i);
-                            if (path >= targetIndex && path <= _board.board.Count)
+                            int path = moveObject.StartIndex - (7 * i);
+                            if (path >= moveObject.EndIndex && path <= _board.board.Count)
                             {
-                                if (path != targetIndex)
+                                if (path != moveObject.EndIndex)
                                 {
                                     _pathelements.Add(_board.board[path]);
                                 }
@@ -456,14 +457,14 @@ namespace Chess.EngineCore
                 // -7 down right
                 else
                 {
-                    if (dif % 9 == 0)
+                    if (moveObject.difference % 9 == 0)
                     {
                         for (int i = 1; i < 7; i++)
                         {
-                            int path = sourceIndex + (9 * i);
-                            if (path <= targetIndex && path <= _board.board.Count)
+                            int path = moveObject.StartIndex + (9 * i);
+                            if (path <= moveObject.EndIndex && path <= _board.board.Count)
                             {
-                                if (path != targetIndex)
+                                if (path != moveObject.EndIndex)
                                 {
                                     _pathelements.Add(_board.board[path]);
                                 }
@@ -474,14 +475,14 @@ namespace Chess.EngineCore
                             return true;
                         }
                     }
-                    if (dif % 7 == 0)
+                    if (moveObject.difference % 7 == 0)
                     {
                         for (int i = 1; i < 7; i++)
                         {
-                            int path = sourceIndex + (7 * i);
-                            if (path <= targetIndex && path <= _board.board.Count)
+                            int path = moveObject.StartIndex + (7 * i);
+                            if (path <= moveObject.EndIndex && path <= _board.board.Count)
                             {
-                                if (path != targetIndex) // this condition is already applied! in line above
+                                if (path != moveObject.EndIndex) // this condition is already applied! in line above
                                 {
                                     _pathelements.Add(_board.board[path]);
                                 }
@@ -496,20 +497,21 @@ namespace Chess.EngineCore
             }
             return false;
         }
-        public bool GetKnight(int sourceIndex, int targetIndex, int dif, int[] pieceLegalMoves)
+        public bool GetKnight(MoveObject moveObject)
         {
-            if (pieceLegalMoves.Contains(dif))
+            if (moveObject.LegalMoves.Contains(moveObject.difference))
             {
                 return true;
             }
             return false;
         }
-        public bool GetQueen(int sourceIndex, int targetIndex, int dif, string sSquare, string tSquare, int[] pieceLegalMoves)
+        // int sourceIndex, int targetIndex, int dif, string sSquare, string tSquare, int[] pieceLegalMoves
+        public bool GetQueen(MoveObject moveObject)
         {
             // If in ranks or files GetRook()
-            if (sSquare.Substring(0, 1) == tSquare.Substring(0, 1) || sSquare.Substring(1, 1) == tSquare.Substring(1, 1))
+            if (moveObject.OnBoardStartSquare.Substring(0, 1) == moveObject.OnBoardEndSquare.Substring(0, 1) || moveObject.OnBoardStartSquare.Substring(1, 1) == moveObject.OnBoardEndSquare.Substring(1, 1))
             {
-                if (GetRook(sourceIndex, targetIndex, dif, sSquare, tSquare))
+                if (GetRook(moveObject))
                 {
                     return true;
                 }
@@ -519,21 +521,21 @@ namespace Chess.EngineCore
             // If diagonal GetBishop()
             else
             {
-                if (GetBishop(sourceIndex, targetIndex, dif, pieceLegalMoves, sSquare, tSquare))
+                if (GetBishop(moveObject))
                 {
                     return true;
                 }
                 return false;
             }
         }
-        public bool GetKing(int sourceIndex, int targetIndex, int dif, string sSquare, int[] pieceLegalMoves)
+        public bool GetKing(MoveObject moveObject)
         {   
-            var piece = _board.board[sourceIndex];
+            var piece = _board.board[moveObject.StartIndex];
             // Will use shadow board
             // Will add more filters her, 1)Will king be in check? 3)Is king in check? 3)Can castle?
 
             // For now just move in correct directions
-            if (pieceLegalMoves.Contains(dif))
+            if (moveObject.LegalMoves.Contains(moveObject.difference))
             {
                 // White King
                 if (piece == "K")
@@ -543,11 +545,11 @@ namespace Chess.EngineCore
                     
                     // Conditions are growing, need to implement shadow board, "King will be in check next move, king is check"
                     Console.ReadKey();
-                    if (dif == -2
+                    if (moveObject.difference == -2
                         && WhiteQueenCastle == true
-                        && _board.board[sourceIndex - 1].ToString() == "."
-                        && _board.board[sourceIndex - 2].ToString() == "."
-                        && _board.board[sourceIndex - 3].ToString() == "."
+                        && _board.board[moveObject.StartIndex - 1].ToString() == "."
+                        && _board.board[moveObject.StartIndex - 2].ToString() == "."
+                        && _board.board[moveObject.StartIndex - 3].ToString() == "."
                         && _board.board[56] == "R")
                     {
                         _board.board[56] = ".";
@@ -559,10 +561,10 @@ namespace Chess.EngineCore
                         return true;
                     }
 
-                    else if (dif == +2
+                    else if (moveObject.difference == +2
                         && WhiteKingCastle == true
-                        && _board.board[sourceIndex + 1].ToString() == "."
-                        && _board.board[sourceIndex + 2].ToString() == "."
+                        && _board.board[moveObject.StartIndex + 1].ToString() == "."
+                        && _board.board[moveObject.StartIndex + 2].ToString() == "."
                         && _board.board[63] == "R")
                     {
                         _board.board[63] = ".";
@@ -583,11 +585,11 @@ namespace Chess.EngineCore
                     
                     // Castling conditions -->
                     // Queen side castle 
-                    if (dif == -2
+                    if (moveObject.difference == -2
                         && BlackQueenCastle == true
-                        && _board.board[sourceIndex - 1].ToString() == "."
-                        && _board.board[sourceIndex - 2].ToString() == "."
-                        && _board.board[sourceIndex - 3].ToString() == "."
+                        && _board.board[moveObject.StartIndex - 1].ToString() == "."
+                        && _board.board[moveObject.StartIndex - 2].ToString() == "."
+                        && _board.board[moveObject.StartIndex - 3].ToString() == "."
                         && _board.board[0] == "r")
                     {
                         _board.board[0] = ".";
@@ -598,10 +600,10 @@ namespace Chess.EngineCore
                     }
 
                     // King side castle
-                    else if (dif == +2
+                    else if (moveObject.difference == +2
                         && BlackKingCastle == true
-                        && _board.board[sourceIndex + 1].ToString() == "."
-                        && _board.board[sourceIndex + 2].ToString() == "."
+                        && _board.board[moveObject.StartIndex + 1].ToString() == "."
+                        && _board.board[moveObject.StartIndex + 2].ToString() == "."
                         && _board.board[7] == "r")
                     {
                         _board.board[7] = ".";
@@ -627,46 +629,46 @@ namespace Chess.EngineCore
          * C) Captures diagonaly next diagonal square 
          * D) Captures EN passant pawn, Capturing empty square and pawn besied!
          */
-        public bool GetWhitePawn(int sourceIndex, int targetIndex, int dif, int[] pieceLegalMoves)
+        public bool GetWhitePawn(MoveObject moveObject)
         {
             // -9 == right en passant and -7 == left en passant 
-            if (pieceLegalMoves.Contains(dif))
+            if (moveObject.LegalMoves.Contains(moveObject.difference))
             {
-                if (dif == -7 || dif == -9)
+                if (moveObject.difference == -7 || moveObject.difference == -9)
                 { 
-                    var leftgap = TargetSourceIndex += 15;
-                    var rightgap = TargetSourceIndex += 17;
-                    if( leftgap == sourceIndex || rightgap == sourceIndex)
+                    var leftgap = moveObject.StartIndex += 15;
+                    var rightgap = moveObject.StartIndex += 17;
+                    if( leftgap == moveObject.StartIndex || rightgap == moveObject.StartIndex)
                     {
-                        if (_board.board[targetIndex].ToString() == "." && LastMoveWasPawn == true && PawnFirstMove == true)
+                        if (_board.board[moveObject.EndIndex].ToString() == "." && LastMoveWasPawn == true && PawnFirstMove == true)
                         {
-                            if (_board.board[sourceIndex + 1] != null && _board.board[sourceIndex + 1].ToString() == "p")
+                            if (_board.board[moveObject.StartIndex + 1] != null && _board.board[moveObject.StartIndex + 1].ToString() == "p")
                             {
-                                _board.board[sourceIndex + 1] = ".";
+                                _board.board[moveObject.StartIndex + 1] = ".";
                                 return true;
                             }
-                            else if (_board.board[sourceIndex - 1] != null && _board.board[sourceIndex - 1].ToString() == "p")
+                            else if (_board.board[moveObject.StartIndex - 1] != null && _board.board[moveObject.StartIndex - 1].ToString() == "p")
                             {
-                                _board.board[sourceIndex - 1] = ".";
+                                _board.board[moveObject.StartIndex - 1] = ".";
                                 return true;
                             }
                             return false;
                         }
                     }   
                     // Capture condition
-                    if (_board.board[targetIndex].ToString() != ".")
+                    if (_board.board[moveObject.EndIndex].ToString() != ".")
                     {
                         return true;
                     }
                     return false;
                 }
                 // Forward condition 
-                var row = _board.GetCoordinates(sourceIndex)[1].ToString();
-                if(dif == -16 && row == "2")
+                var row = _board.GetCoordinates(moveObject.StartIndex)[1].ToString();
+                if(moveObject.difference == -16 && row == "2")
                 {
                     return true;
                 }
-                else if(dif == -8 && _board.board[targetIndex].ToString() == ".")
+                else if(moveObject.difference == -8 && _board.board[moveObject.EndIndex].ToString() == ".")
                 {
                     return true;
                 }
@@ -675,46 +677,46 @@ namespace Chess.EngineCore
             return false;
         }
 
-        public bool GetBlackPawn(int sourceIndex, int targetIndex, int dif, int[] pieceLegalMoves)
+        public bool GetBlackPawn(MoveObject moveObject)
         {
-            if (pieceLegalMoves.Contains(dif))
+            if (moveObject.LegalMoves.Contains(moveObject.difference))
             {
-                if (dif == +7 || dif == +9)
+                if (moveObject.difference == +7 || moveObject.difference == +9)
                 {
                     // +9 == right en passant and +7 == left en passant 
                     var leftgap = TargetSourceIndex += 15;
                     var rightgap = TargetSourceIndex -= 17;
                     if (leftgap == TargetSourceIndex || rightgap == TargetSourceIndex)
                     {
-                        if (_board.board[targetIndex].ToString() == "." && LastMoveWasPawn == true && PawnFirstMove == true)
+                        if (_board.board[moveObject.EndIndex].ToString() == "." && LastMoveWasPawn == true && PawnFirstMove == true)
                         {
-                            if (_board.board[sourceIndex + 1] != null && _board.board[sourceIndex + 1].ToString() == "P")
+                            if (_board.board[moveObject.StartIndex + 1] != null && _board.board[moveObject.StartIndex + 1].ToString() == "P")
                             {
-                                _board.board[sourceIndex + 1] = ".";
+                                _board.board[moveObject.StartIndex + 1] = ".";
                                 return true;
                             }
-                            else if (_board.board[sourceIndex - 1] != null && _board.board[sourceIndex - 1].ToString() == "P")
+                            else if (_board.board[moveObject.StartIndex - 1] != null && _board.board[moveObject.StartIndex - 1].ToString() == "P")
                             {
-                                _board.board[sourceIndex - 1] = ".";
+                                _board.board[moveObject.StartIndex - 1] = ".";
                                 return true;
                             }
                             return false;
                         }
                     }
                     // Capture condition
-                    if (_board.board[targetIndex].ToString() != ".")
+                    if (_board.board[moveObject.EndIndex].ToString() != ".")
                     {
                         return true;
                     }
                     return false;
                 }
                 // Forward condition 
-                var row = _board.GetCoordinates(sourceIndex)[1].ToString();
-                if (dif == +16 && row == "7")
+                var row = _board.GetCoordinates(moveObject.StartIndex)[1].ToString();
+                if (moveObject.difference == +16 && row == "7")
                 {
                     return true;
                 }
-                else if (dif == +8 && _board.board[targetIndex].ToString() == ".")
+                else if (moveObject.difference == +8 && _board.board[moveObject.EndIndex].ToString() == ".")
                 {
                     return true;
                 }
@@ -803,14 +805,8 @@ namespace Chess.EngineCore
             string pieceColor = piece.Substring(0, 1);
             int targetIndex = _board.GetBoardIndex(tSquare);
             string targetColor = _board.board[targetIndex].Substring(0, 1);
+
             
-            MoveObject moveObject = new MoveObject
-            {
-                StartIndex = sourceIndex,
-                EndIndex = targetIndex,
-                StartCoordinate = _board.GetCoordinates(sourceIndex),
-                EndCoordinate= _board.GetCoordinates(targetIndex),
-            };
             //1) Checking if there is no same color piece at target square.
             if (pieceColor != targetColor)
             {
@@ -819,20 +815,32 @@ namespace Chess.EngineCore
                 // Getting list of legal moves based on type of the piece
                 var pieceLegalMoves = LegalMoves[pieceIndex];
                 int dif = targetIndex - sourceIndex;
+
+                MoveObject moveObject = new MoveObject
+                {
+                    StartIndex = sourceIndex,
+                    EndIndex = targetIndex,
+                    StartCoordinate = _board.GetCoordinates(sourceIndex),
+                    EndCoordinate = _board.GetCoordinates(targetIndex),
+                    difference = dif,
+                    LegalMoves = pieceLegalMoves,
+                    OnBoardStartSquare = sSquare,
+                    OnBoardEndSquare = tSquare
+                };
                 //2) piece rules
                 switch (piece)
                 {
                     case "N" or "n":
-                        if (GetKnight(sourceIndex, targetIndex, dif, pieceLegalMoves))
+                        if (GetKnight(moveObject))
                         {
-                            UpdateBoard(sourceIndex, targetIndex);
+                            UpdateBoard(moveObject.StartIndex, moveObject.EndIndex);
                             return true;
                         }
                         return false;
 
                     case "B" or "b":
-                        // TODO: check for bug here --> :| 
-                        if (GetBishop(sourceIndex, targetIndex, dif, pieceLegalMoves, sSquare, tSquare))
+                        // TODO: check for bug here --> :| // moveObject.StartIndex, moveObject.EndIndex, moveObject.Difference, moveObject.StartCoordinate, moveObject.EndCoordinate
+                        if (GetBishop(moveObject))
                         {
                             UpdateBoard(sourceIndex, targetIndex);
                             return true;
@@ -840,7 +848,7 @@ namespace Chess.EngineCore
                         return false;
 
                     case "R" or "r":
-                        if (GetRook(sourceIndex, targetIndex, dif, sSquare, tSquare))
+                        if (GetRook(moveObject))
                         {
                             if(BlackKingCastle == true || BlackQueenCastle == true)
                             {
@@ -871,7 +879,7 @@ namespace Chess.EngineCore
 
                     // Easier to implement in separate functions.
                     case "P":
-                        if (GetWhitePawn(sourceIndex, targetIndex, dif, pieceLegalMoves))
+                        if (GetWhitePawn(moveObject))
                         {
                             if(dif == -16)
                             {
@@ -888,7 +896,7 @@ namespace Chess.EngineCore
 
 
                     case "p":
-                        if (GetBlackPawn(sourceIndex, targetIndex, dif, pieceLegalMoves))
+                        if (GetBlackPawn(moveObject))
                         {
                             if (dif == 16)
                             {
@@ -905,7 +913,7 @@ namespace Chess.EngineCore
 
 
                     case "K" or "k":
-                        if (GetKing(sourceIndex, targetIndex, dif, sSquare, pieceLegalMoves))
+                        if (GetKing(moveObject))
                         {
                             Console.WriteLine($"Black --> KSide{BlackKingCastle}  QSide{BlackQueenCastle}");
                             Console.WriteLine($"White --> KSide{WhiteKingCastle}  QSide{WhiteQueenCastle}");
@@ -916,7 +924,7 @@ namespace Chess.EngineCore
                         return false;
 
                     case "Q" or "q":
-                        if (GetQueen(sourceIndex, targetIndex, dif, sSquare, tSquare, pieceLegalMoves))
+                        if (GetQueen(moveObject)) // sourceIndex, targetIndex, dif, sSquare, tSquare, pieceLegalMoves
                         {
                             UpdateBoard(sourceIndex, targetIndex);
                             return true;
@@ -936,7 +944,7 @@ namespace Chess.EngineCore
             var move = ($"{sourceIndex}{startSquare}-{endSquare}");
             return move;
         }
-        public void UpdateBoard(int sourceIndex, int targetIndex)
+        public void UpdateBoard(int sourceIndex , int targetIndex)
         {
             if (_board.board[sourceIndex].ToString() == "p"|| _board.board[sourceIndex].ToString() == "P")
             {
@@ -995,9 +1003,11 @@ namespace Chess.EngineCore
 
         public void BlackTurn()
         {
-            Console.WriteLine("Black turn");
+            Console.WriteLine("Black turn, test mode will return control to user");
             
             Console.ReadKey();
+            WhiteTurn();
+             
         }
 
         public string GetSide()
