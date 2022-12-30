@@ -800,7 +800,7 @@ namespace Chess.EngineCore
         {
             
             //Console.WriteLine($"Move is: {sSquare}-{tSquare}");
-            int sourceIndex = _board.GetBoardIndex(sSquare);
+            //int sourceIndex = 
             string piece = _board.board[sourceIndex];
             string pieceColor = piece.Substring(0, 1);
             int targetIndex = _board.GetBoardIndex(tSquare);
@@ -818,14 +818,16 @@ namespace Chess.EngineCore
 
                 MoveObject moveObject = new MoveObject
                 {
-                    StartIndex = sourceIndex,
+                    StartIndex = _board.GetBoardIndex(sSquare),
                     EndIndex = targetIndex,
                     StartCoordinate = _board.GetCoordinates(sourceIndex),
                     EndCoordinate = _board.GetCoordinates(targetIndex),
                     difference = dif,
                     LegalMoves = pieceLegalMoves,
                     OnBoardStartSquare = sSquare,
-                    OnBoardEndSquare = tSquare
+                    OnBoardEndSquare = tSquare,
+                    pieceSYmbol = _board.board[StartIndex].ToString();
+
                 };
                 //2) piece rules
                 switch (piece)
