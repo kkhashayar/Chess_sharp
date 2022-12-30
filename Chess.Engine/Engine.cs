@@ -1019,15 +1019,18 @@ namespace Chess.EngineCore
             {
                 if (Turn == "w")
                 {
-                    Console.WriteLine(Turn);
+                    Console.WriteLine($"It is a {Turn} turn");
                     Console.ReadKey();
                     WhiteTurn();
                 }
                 else
                 {
-                    BlackTurn();
-                    Console.WriteLine(Turn);
-                    Console.ReadKey();
+                    //Console.WriteLine($"It is a {Turn} turn");
+                    //Console.WriteLine("In testing mode, turn will back to edit mode");
+                    //Console.ReadKey();
+                    //BlackTurn();
+                    WhiteTurn();
+                    
                 }
                 FenFlag= false;
             }
