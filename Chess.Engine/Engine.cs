@@ -799,13 +799,14 @@ namespace Chess.EngineCore
         public bool MakeMove(string sSquare, string tSquare)
         {
             
+            // Problem is here --> 
             //Console.WriteLine($"Move is: {sSquare}-{tSquare}");
-            //int sourceIndex = 
+            int sourceIndex = _board.GetBoardIndex(sSquare);
             string piece = _board.board[sourceIndex];
             string pieceColor = piece.Substring(0, 1);
             int targetIndex = _board.GetBoardIndex(tSquare);
             string targetColor = _board.board[targetIndex].Substring(0, 1);
-
+            var pieceSymbol = _board.board[sourceIndex].ToString();
             
             //1) Checking if there is no same color piece at target square.
             if (pieceColor != targetColor)
@@ -826,7 +827,7 @@ namespace Chess.EngineCore
                     LegalMoves = pieceLegalMoves,
                     OnBoardStartSquare = sSquare,
                     OnBoardEndSquare = tSquare,
-                    pieceSYmbol = _board.board[StartIndex].ToString();
+                    pieceSYmbol = pieceSymbol
 
                 };
                 //2) piece rules
