@@ -15,8 +15,8 @@ namespace Chess.EngineCore.EngineParts
 
         public List<int> GenAllMoves()
         {
-            List<int> temp = new List<int>();
-            return temp;
+            List<int> AllPOssibleMoves = new List<int>();
+            return AllPOssibleMoves;
         }
     }
 }

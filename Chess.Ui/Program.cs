@@ -37,7 +37,7 @@ void PrintBoard()
 //PrintBoard();
 
 
-fenParser.SetupBoard("");
+fenParser.SetupBoard("8/pppppppp/8/8/1P1P1P1P/8/8/8 w - - 0 1");
 
 //fenBuilder.GnerateFen();
 

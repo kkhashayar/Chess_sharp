@@ -1006,9 +1006,9 @@ namespace Chess.EngineCore
 
         public void BlackTurn()
         {
-            Console.WriteLine("Black turn, test mode will return control to user");
+            //Console.WriteLine("Black turn, test mode will return control to user");
             
-            Console.ReadKey();
+            //Console.ReadKey();
             WhiteTurn();
              
         }
