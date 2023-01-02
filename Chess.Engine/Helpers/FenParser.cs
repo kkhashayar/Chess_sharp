@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Chess.EngineCore.Boards;
+using Chess.EngineCore.EngineParts;
 
 namespace Chess.EngineCore.Helpers
 {
@@ -12,12 +13,14 @@ namespace Chess.EngineCore.Helpers
         private readonly Board _board;
         private readonly Engine _engine;
         private readonly string _fen;
+        private readonly PieceAssigner _pieceAssigner;
 
-        public FenParser(Board board, Engine engine, string fen = "")
+        public FenParser(Board board, Engine engine, PieceAssigner pieceAssigner, string fen = "")
         {
             _board = board;
             _engine = engine;
             _fen = fen;
+            _pieceAssigner = pieceAssigner;
         }
 
         public void SetupBoard(string fen = "")
@@ -76,7 +79,7 @@ namespace Chess.EngineCore.Helpers
                     }
                 }
             }
-            _engine.AsignThepieces(); // Reads from the board
+            _pieceAssigner.AsignThepieces(); // Reads from the board
         }
     }
 

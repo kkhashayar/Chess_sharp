@@ -12,11 +12,15 @@ namespace Chess.EngineCore.EngineParts
     {
         Board board = new Board();
 
-
+        
         public List<int> GenAllMoves()
         {
+
+       
             List<int> AllPOssibleMoves = new List<int>();
             return AllPOssibleMoves;
         }
     }
+
+
 }
