@@ -799,13 +799,14 @@ namespace Chess.EngineCore
         public bool MakeMove(string sSquare, string tSquare)
         {
             
+            // Problem is here --> 
             //Console.WriteLine($"Move is: {sSquare}-{tSquare}");
             int sourceIndex = _board.GetBoardIndex(sSquare);
             string piece = _board.board[sourceIndex];
             string pieceColor = piece.Substring(0, 1);
             int targetIndex = _board.GetBoardIndex(tSquare);
             string targetColor = _board.board[targetIndex].Substring(0, 1);
-
+            var pieceSymbol = _board.board[sourceIndex].ToString();
             
             //1) Checking if there is no same color piece at target square.
             if (pieceColor != targetColor)
@@ -818,14 +819,16 @@ namespace Chess.EngineCore
 
                 MoveObject moveObject = new MoveObject
                 {
-                    StartIndex = sourceIndex,
+                    StartIndex = _board.GetBoardIndex(sSquare),
                     EndIndex = targetIndex,
                     StartCoordinate = _board.GetCoordinates(sourceIndex),
                     EndCoordinate = _board.GetCoordinates(targetIndex),
                     difference = dif,
                     LegalMoves = pieceLegalMoves,
                     OnBoardStartSquare = sSquare,
-                    OnBoardEndSquare = tSquare
+                    OnBoardEndSquare = tSquare,
+                    pieceSYmbol = pieceSymbol
+
                 };
                 //2) piece rules
                 switch (piece)
@@ -1019,15 +1022,18 @@ namespace Chess.EngineCore
             {
                 if (Turn == "w")
                 {
-                    Console.WriteLine(Turn);
+                    Console.WriteLine($"It is a {Turn} turn");
                     Console.ReadKey();
                     WhiteTurn();
                 }
                 else
                 {
-                    BlackTurn();
-                    Console.WriteLine(Turn);
-                    Console.ReadKey();
+                    //Console.WriteLine($"It is a {Turn} turn");
+                    //Console.WriteLine("In testing mode, turn will back to edit mode");
+                    //Console.ReadKey();
+                    //BlackTurn();
+                    WhiteTurn();
+                    
                 }
                 FenFlag= false;
             }

@@ -16,6 +16,7 @@ namespace Chess.EngineCore.Objects
         public int difference = 0;
         public int[] LegalMoves; 
         public string OnBoardStartSquare = string.Empty;
-        public string OnBoardEndSquare = string.Empty;  
+        public string OnBoardEndSquare = string.Empty;
+        public string pieceSYmbol = string.Empty;
     }
 }
