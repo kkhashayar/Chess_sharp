@@ -1,19 +1,21 @@
 ﻿
 using Chess.EngineCore;
+using Chess.EngineCore.EngineParts;
 using Chess.EngineCore.Objects;
 using System.Text;
 using static Chess.EngineCore.Boards;
 using static Chess.EngineCore.Helpers.FenParser;
 
+// Not sure about this structure
 
 var board = new Chess.EngineCore.Boards.Board();
 
-// var piecesInUnicode = board.unicodePiece; // For later implementation
-
 Piece piece = new Piece();
-
 Engine engine = new Engine(board, piece);
-var fenParser = new Chess.EngineCore.Helpers.FenParser(board, engine, "");
+
+PieceAssigner pieceAssigner = new PieceAssigner(piece, engine);
+
+var fenParser = new Chess.EngineCore.Helpers.FenParser(board, engine, pieceAssigner, "");
 var fenBuilder = new Chess.EngineCore.Helpers.FenBuilder(board, engine);
 
 board.BuildChessBoard(64);
